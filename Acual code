@@ -40,7 +40,7 @@ allenemies_desplayname = ("skeliton","zombie")
 allenemies_atk = (4,2)
 #map saves
 map_saves = []
-map_saves_location = ["0,0"]
+map_saves_location = []
 submap_saves = []
 submap_saves_location = []
 biome_list = (0,1,2,3)
@@ -48,8 +48,7 @@ locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
 #temp for testing
-map_saves = ["2_2_2_3_2_2_0_2_0_3_3_2_2_0_3_1_1_0_1_0_3_0_1_1_3_3_3_0_0_2_/2_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_2_/2_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_0_/2_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_0_/2_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_3_/3_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_3_/3_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_2_/3_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_3_/3_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_1_/3_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_2_/2_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_3_/2_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_2_/2_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_1_/1_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_1_/1_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_3_/1_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_2_/1_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_1_/1_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_0_/0_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_1_/0_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_1_/1_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_0_/1_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_3_/3_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_0_/3_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_0_/3_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_2_/3_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_2_/3_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_3_/3_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_1_/3_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_2_/3_2_0_3_3_3_0_3_1_3_1_3_3_2_1_1_2_2_1_3_1_0_0_1_1_3_0_2_2_0_/"]
-
+map_saves = []
 
 
 
@@ -410,17 +409,14 @@ def Refresh_Map(map):
             this_location_locations.pop(i)
             this_location_map_locations.pop(i)
     maps = [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21,map22,map23,map24,map25,map26,map27,map28,map29,map30]
-    print(this_location_locations)
+
     for i in range(len(this_location_elements)):
         map_location_split = this_location_map_locations[i].split(",")
         maps[int(map_location_split[1])].pop(int(map_location_split[0])*2)
         if this_location_locations[i] == "Player":
             desplay_element = "\u265F"
 
-        print(map15)
         maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
-
-        print(map15)
 
 
 
@@ -534,6 +530,8 @@ def Refresh_Map(map):
             print("Invalid input, valid inputs include",valid_awnsers)
         else:
             idiotloop = 1
+    if examine == "W" or "w":
+        pass
 
 
 
@@ -614,7 +612,6 @@ def Generate_Map(map_location):
         
         #decompiles maps edges around it
 
-
         if map_l == "N/A":
             pass
         else:
@@ -647,13 +644,13 @@ def Generate_Map(map_location):
             for x in range(30):
                 temp2 = temp1[x].split("_")
                 map_d.append(temp2[29])
-        
+
         Generated_map = []
         
         map_assemble = ""
         for x in range(30):
             for i in range(30):
-                
+
                 
                 #detects sourounding areas
                 biome_chances = []
@@ -662,42 +659,59 @@ def Generate_Map(map_location):
                         pass
                     else:
                         biome_chances.append(map_u[i])
+                elif map_u == "N/A" or len(map_u) < i+1:
+                    pass
+                else:
+                    biome_chances.append(map_u[i])
                 if x == 29:
                     if map_d == "N/A" or len(map_d) < i+1:
                         pass
                     else:
                         biome_chances.append(map_d[i])
+                elif map_d == "N/A" or len(map_d) < i+1:
+                    pass
+                else:
+                    biome_chances.append(map_d[i])
                 if i == 0:
                     if map_l == "N/A" or len(map_l) < i+1:
                         pass
                     else:
                         biome_chances.append(map_l[i])
+                elif map_l == "N/A" or len(map_l) < i+1:
+                    pass
+                else:
+                    biome_chances.append(map_l[i-1])
                 if i == 29:
                     if map_r == "N/A" or len(map_r) < i+1:
                         pass
                     else:
                         biome_chances.append(map_r[i])
-                
+                elif map_r == "N/A" or len(map_r) < i+1:
+                    pass
+                else:
+                    biome_chances.append(map_r[i+1])
 
                 #calculates chances for each biome depending on sourounding area
-                #75% chance to be one of the biomes around it
-                #25% chance to be a new biome
+                #95% chance to be one of the biomes around it
+                #5% chance to be a new biome
                 if len(biome_chances) == 0:
                     biome = random.randint(0,len(biome_list)-1)
+
                 if len(biome_chances) >= 1:
                     randombiome = random.randint(0,100)
-                    if randombiome <= 99:
+                    if randombiome <= 95:
                         biome = biome_chances[random.randint(0,len(biome_chances)-1)]
+
                     else:
                         biome = random.randint(0,len(biome_list)-1)
-                
+
 
 
                 #saves data in a list
                 if map_u == "N/A":
                     map_u = []
                 if map_l == "N/A":
-                    map_u = []
+                    map_l = []
                 maps_list[x].append(str(biome))
                 map_l.insert(i,str(biome))
                 try:
@@ -731,13 +745,7 @@ def Generate_Map(map_location):
 
 
 
-Encoutner_setup()
-Generate_Map("1,0")
+
+Generate_Map("0,0")
 Refresh_Map("0,0")
-while enemyHP > 0 and HP > 0:
-    Refresh_hud()
-else:
-    if HP > 0:
-        print("you win")
-    else:
-        print("you lose")
+
