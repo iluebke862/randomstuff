@@ -47,8 +47,7 @@ biome_list = (0,1,2,3)
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
-#temp for testing
-map_saves = []
+gamestate = 0
 
 
 
@@ -530,10 +529,46 @@ def Refresh_Map(map):
             print("Invalid input, valid inputs include",valid_awnsers)
         else:
             idiotloop = 1
-    if examine == "W" or "w":
-        pass
-
-
+    if examine == "W" or examine =="w":
+        print(locations_map_location)
+        listlocation = locations.index("Player")
+        player_location = locations_map_location[listlocation].split(",")
+        player_locationx = int(player_location[0])
+        player_locationy = int(player_location[1])
+        player_locationy -= 1
+        locations_map_location.pop(listlocation)
+        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        print(locations_map_location)
+    if examine == "S" or examine =="s":
+        print(locations_map_location)
+        listlocation = locations.index("Player")
+        player_location = locations_map_location[listlocation].split(",")
+        player_locationx = int(player_location[0])
+        player_locationy = int(player_location[1])
+        player_locationy += 1
+        locations_map_location.pop(listlocation)
+        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        print(locations_map_location)
+    if examine == "A" or examine == "a":
+        print(locations_map_location)
+        listlocation = locations.index("Player")
+        player_location = locations_map_location[listlocation].split(",")
+        player_locationx = int(player_location[0])
+        player_locationy = int(player_location[1])
+        player_locationx -= 1
+        locations_map_location.pop(listlocation)
+        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        print(locations_map_location)
+    if examine == "D" or examine == "d":
+        print(locations_map_location)
+        listlocation = locations.index("Player")
+        player_location = locations_map_location[listlocation].split(",")
+        player_locationx = int(player_location[0])
+        player_locationy = int(player_location[1])
+        player_locationx += 1
+        locations_map_location.pop(listlocation)
+        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        print(locations_map_location)
 
 def Generate_Map(map_location):
     global map_saves
@@ -747,5 +782,10 @@ def Generate_Map(map_location):
 
 
 Generate_Map("0,0")
-Refresh_Map("0,0")
-
+while gamestate != -1:
+    while gamestate == 0:
+        Refresh_Map("0,0")
+    if gamestate == 1:
+        Encoutner_setup()
+    while gamestate == 1:
+        Refresh_hud()
