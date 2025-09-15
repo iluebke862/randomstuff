@@ -35,6 +35,7 @@ cards_def = (1,2,3,4)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage")
 #enemies data
+
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("skeliton","zombie")
 allenemies_atk = (4,2)
@@ -44,6 +45,9 @@ map_saves_location = []
 submap_saves = []
 submap_saves_location = []
 biome_list = (0,1,2,3)
+biome_mob_chance=(10,10,10,10)
+biome_desplay=("\u26C6","\u2667","\u2637","\u26F0")
+biome_mobs=("0","0,1","0,1","1")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -290,8 +294,7 @@ def Play_card(card,target):
 
 
 
-def Generate_Map():
-    pass
+
 
 
 
@@ -309,6 +312,7 @@ def Generate_Map():
 
 
 def Refresh_Map(map):
+    global enemy
     global map_saves
     global map_saves_location
     global submap_saves
@@ -316,6 +320,8 @@ def Refresh_Map(map):
     global locations
     global locations_location
     global locations_map_location
+    global biome_mob_chance
+    global gamestate
 
     map1  = []
     map2  = []
@@ -382,14 +388,7 @@ def Refresh_Map(map):
         temp3 = temp2.split("_")
         for i in range(30):
             #translates string into the accual desplay
-            if int(temp3[i]) == 0:
-                temp4 = "\u26C6"
-            if int(temp3[i]) == 1:
-                temp4 = "\u2667"
-            if int(temp3[i]) == 2:
-                temp4 = "\u2637"
-            if int(temp3[i]) == 3:
-                temp4 = "\u26F0"
+            temp4 = biome_desplay[int(temp3[i])]
             #adds it to the map desplay
             maps[x].append(temp4)
             maps[x].append(" ")
@@ -410,10 +409,13 @@ def Refresh_Map(map):
 
     for i in range(len(this_location_elements)):
         map_location_split = this_location_map_locations[i].split(",")
-        maps[int(map_location_split[1])].pop(int(map_location_split[0])*2)
+       
         if this_location_locations[i] == "Player":
             desplay_element = "\u265F"
+            player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
 
+        
+        maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
         maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
 
 
@@ -481,11 +483,15 @@ def Refresh_Map(map):
         player_locationx += 1
         locations_map_location.pop(listlocation)
         locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-    if examine == "W" or examine == "w" or examine == "A" or examine == "a" or examine == "D" or examine == "d" or examine == "S" or examine == "s":
-        print(player_location)
-        player_zone = maps[int(player_location[1])][int(player_location[0])*2]
-        print(player_zone)
-        #need to call it before the refresh or smthing 
+    if examine == "W" or examine =="w" or examine == "S" or examine =="s" or examine == "A" or examine == "a" or examine == "D" or examine == "d":
+    #mob encounters
+        if random.randint(1,biome_mob_chance[biome_desplay.index(player_zone)]) == 1:
+            mobs = biome_mobs[biome_desplay.index(player_zone)].split(",")
+            temp = random.randint(0,len(mobs)-1)
+            enemy = int(mobs[int(temp)])
+            gamestate = 1
+            
+
 
 
 
