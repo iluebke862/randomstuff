@@ -364,7 +364,7 @@ def Refresh_Map(map):
 
 
     temp = map_saves[0].split("/")
-    temp5 = [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21,map22,map23,map24,map25,map26,map27,map28,map29,map30]
+    maps = [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21,map22,map23,map24,map25,map26,map27,map28,map29,map30]
 
     # number - icon
     '''
@@ -391,8 +391,8 @@ def Refresh_Map(map):
             if int(temp3[i]) == 3:
                 temp4 = "\u26F0"
             #adds it to the map desplay
-            temp5[x].append(temp4)
-            temp5[x].append(" ")
+            maps[x].append(temp4)
+            maps[x].append(" ")
             
     #I did not in fact need to enumerate, I just needed for line 384 to refrance x instead of i, and same for line 369, I think the intire problem stemed from me hurriedly finishing this up and not dubble checking it before I had to go    
     
@@ -407,7 +407,6 @@ def Refresh_Map(map):
             this_location_elements.pop(i)
             this_location_locations.pop(i)
             this_location_map_locations.pop(i)
-    maps = [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21,map22,map23,map24,map25,map26,map27,map28,map29,map30]
 
     for i in range(len(this_location_elements)):
         map_location_split = this_location_map_locations[i].split(",")
@@ -425,96 +424,10 @@ def Refresh_Map(map):
 
     #printing the map
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    for x in map1:
-        print(x,end="")
-    print()
-    for x in map2:
-        print(x,end="")
-    print()
-    for x in map3:
-        print(x,end="")
-    print()
-    for x in map4:
-        print(x,end="")
-    print()
-    for x in map5:
-        print(x,end="")
-    print()
-    for x in map6:
-        print(x,end="")
-    print()
-    for x in map7:
-        print(x,end="")
-    print()
-    for x in map8:
-        print(x,end="")
-    print()
-    for x in map9:
-        print(x,end="")
-    print()
-    for x in map10:
-        print(x,end="")
-    print()
-    for x in map11:
-        print(x,end="")
-    print()
-    for x in map12:
-        print(x,end="")
-    print()
-    for x in map13:
-        print(x,end="")
-    print()
-    for x in map14:
-        print(x,end="")
-    print()
-    for x in map15:
-        print(x,end="")
-    print()
-    for x in map16:
-        print(x,end="")
-    print()
-    for x in map17:
-        print(x,end="")
-    print()
-    for x in map18:
-        print(x,end="")
-    print()
-    for x in map19:
-        print(x,end="")
-    print()
-    for x in map20:
-        print(x,end="")
-    print()
-    for x in map21:
-        print(x,end="")
-    print()
-    for x in map22:
-        print(x,end="")
-    print()
-    for x in map23:
-        print(x,end="")
-    print()
-    for x in map24:
-        print(x,end="")
-    print()
-    for x in map25:
-        print(x,end="")
-    print()
-    for x in map26:
-        print(x,end="")
-    print()
-    for x in map27:
-        print(x,end="")
-    print()
-    for x in map28:
-        print(x,end="")
-    print()
-    for x in map29:
-        print(x,end="")
-    print()
-    for x in map30:
-        print(x,end="")
-    print()
+    for x in range(30):
+        for i in maps[x]:
+            print(i,end="")
+        print()
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     valid_awnsers = ["W","A","S","D","w","a","s","d"]
     idiotloop = 0
@@ -530,7 +443,7 @@ def Refresh_Map(map):
         else:
             idiotloop = 1
     if examine == "W" or examine =="w":
-        print(locations_map_location)
+
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
@@ -538,9 +451,9 @@ def Refresh_Map(map):
         player_locationy -= 1
         locations_map_location.pop(listlocation)
         locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-        print(locations_map_location)
+
     if examine == "S" or examine =="s":
-        print(locations_map_location)
+
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
@@ -548,9 +461,9 @@ def Refresh_Map(map):
         player_locationy += 1
         locations_map_location.pop(listlocation)
         locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-        print(locations_map_location)
+
     if examine == "A" or examine == "a":
-        print(locations_map_location)
+
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
@@ -558,9 +471,9 @@ def Refresh_Map(map):
         player_locationx -= 1
         locations_map_location.pop(listlocation)
         locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-        print(locations_map_location)
+
     if examine == "D" or examine == "d":
-        print(locations_map_location)
+
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
@@ -568,7 +481,14 @@ def Refresh_Map(map):
         player_locationx += 1
         locations_map_location.pop(listlocation)
         locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-        print(locations_map_location)
+    if examine == "W" or examine == "w" or examine == "A" or examine == "a" or examine == "D" or examine == "d" or examine == "S" or examine == "s":
+        print(player_location)
+        player_zone = maps[int(player_location[1])][int(player_location[0])*2]
+        print(player_zone)
+        #need to call it before the refresh or smthing 
+
+
+
 
 def Generate_Map(map_location):
     global map_saves
