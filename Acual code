@@ -37,7 +37,7 @@ cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals 
 #enemies data
 
 allenemies_MaxHP = (5,10)
-allenemies_desplayname = ("skeliton","zombie")
+allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
 #map saves
 map_saves = []
@@ -45,7 +45,7 @@ map_saves_location = []
 submap_saves = []
 submap_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(10,10,10,10)
+biome_mob_chance=(1000,1000,1000,1000)
 biome_desplay=("\u26C6","\u2667","\u2637","\u26F0")
 biome_mobs=("0","0,1","0,1","1")
 locations = ["Player"]
@@ -316,7 +316,7 @@ def Refresh_Map(map):
     global map_saves
     global map_saves_location
     global submap_saves
-    global submap_saves_location
+    global submap_saves_location7
     global locations
     global locations_location
     global locations_map_location
@@ -368,8 +368,8 @@ def Refresh_Map(map):
         map_loading = map_saves[map_saves_location.index(map)]
     
 
-
-    temp = map_saves[0].split("/")
+    
+    temp = map_loading.split("/")
     maps = [map1,map2,map3,map4,map5,map6,map7,map8,map9,map10,map11,map12,map13,map14,map15,map16,map17,map18,map19,map20,map21,map22,map23,map24,map25,map26,map27,map28,map29,map30]
 
     # number - icon
@@ -450,39 +450,110 @@ def Refresh_Map(map):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        player_locationy -= 1
-        locations_map_location.pop(listlocation)
-        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if player_locationy != 0:
+            player_locationy -= 1
+            locations_map_location.pop(listlocation)
+            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        else:
+            temp5 = locations_location[listlocation].split(",")
+            temp5[0] = int(temp5[0])
+            temp5[1] = int(temp5[1])
+            temp5[1] -= 1
+            temp6 = str(temp5[0])+","+str(temp5[1])
+            temp8 = locations_map_location[listlocation].split(",")
+            try:
+                temp99 = map_saves_location.index(temp6)
+            except:
+                Generate_Map(temp6)
+                temp99 = map_saves_location.index(temp6)
+            locations_location.pop(listlocation)
+            locations_location.insert(listlocation,temp6)
+            locations_map_location.pop(listlocation)
+            temp9 = str(temp8[0]+","+str(29))
+            locations_map_location.insert(listlocation,temp9)
 
+            
     if examine == "S" or examine =="s":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        player_locationy += 1
-        locations_map_location.pop(listlocation)
-        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-
+        if player_locationy != 29:
+            player_locationy += 1
+            locations_map_location.pop(listlocation)
+            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        else:
+            temp5 = locations_location[listlocation].split(",")
+            temp5[0] = int(temp5[0])
+            temp5[1] = int(temp5[1])
+            temp5[1] += 1
+            temp6 = str(temp5[0])+","+str(temp5[1])
+            temp8 = locations_map_location[listlocation].split(",")
+            try:
+                temp99 = map_saves_location.index(temp6)
+            except:
+                Generate_Map(temp6)
+                temp99 = map_saves_location.index(temp6)
+            locations_location.pop(listlocation)
+            locations_location.insert(listlocation,temp6)
+            locations_map_location.pop(listlocation)
+            temp9 = str(temp8[0]+","+str(0))
+            locations_map_location.insert(listlocation,temp9)
     if examine == "A" or examine == "a":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        player_locationx -= 1
-        locations_map_location.pop(listlocation)
-        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
-
+        if player_locationx != 0:
+            player_locationx -= 1
+            locations_map_location.pop(listlocation)
+            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        else:
+            temp5 = locations_location[listlocation].split(",")
+            temp5[0] = int(temp5[0])
+            temp5[1] = int(temp5[1])
+            temp5[0] -= 1
+            temp6 = str(temp5[0])+","+str(temp5[1])
+            temp8 = locations_map_location[listlocation].split(",")
+            try:
+                temp99 = map_saves_location.index(temp6)
+            except:
+                Generate_Map(temp6)
+                temp99 = map_saves_location.index(temp6)
+            locations_location.pop(listlocation)
+            locations_location.insert(listlocation,temp6)
+            locations_map_location.pop(listlocation)
+            temp9 = str(str(29)+","+temp8[1])
+            locations_map_location.insert(listlocation,temp9)
     if examine == "D" or examine == "d":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        player_locationx += 1
-        locations_map_location.pop(listlocation)
-        locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if player_locationx != 29:
+            player_locationx += 1
+            locations_map_location.pop(listlocation)
+            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        else:
+            temp5 = locations_location[listlocation].split(",")
+            temp5[0] = int(temp5[0])
+            temp5[1] = int(temp5[1])
+            temp5[0] += 1
+            temp6 = str(temp5[0])+","+str(temp5[1])
+            temp8 = locations_map_location[listlocation].split(",")
+            try:
+                temp99 = map_saves_location.index(temp6)
+            except:
+                Generate_Map(temp6)
+                temp99 = map_saves_location.index(temp6)
+            locations_location.pop(listlocation)
+            locations_location.insert(listlocation,temp6)
+            locations_map_location.pop(listlocation)
+            temp9 = str(str(0)+","+temp8[1])
+            locations_map_location.insert(listlocation,temp9)
     if examine == "W" or examine =="w" or examine == "S" or examine =="s" or examine == "A" or examine == "a" or examine == "D" or examine == "d":
     #mob encounters
         if random.randint(1,biome_mob_chance[biome_desplay.index(player_zone)]) == 1:
@@ -710,8 +781,15 @@ def Generate_Map(map_location):
 Generate_Map("0,0")
 while gamestate != -1:
     while gamestate == 0:
-        Refresh_Map("0,0")
+        temp = locations.index("Player")
+        Refresh_Map(locations_location[temp])
     if gamestate == 1:
         Encoutner_setup()
     while gamestate == 1:
         Refresh_hud()
+        if HP <= 0:
+            print("Game Over")
+            gamestate = -1
+        if enemyHP <= 0:
+            print("Enemy Defeated!")
+            gamestate = 0
