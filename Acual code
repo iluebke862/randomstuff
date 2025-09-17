@@ -45,9 +45,10 @@ map_saves_location = []
 submap_saves = []
 submap_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(1000,1000,1000,1000)
+biome_mob_chance=(10,10,10,10)
 biome_desplay=("\u26C6","\u2667","\u2637","\u26F0")
 biome_mobs=("0","0,1","0,1","1")
+valid_stuff = ("","0","0","1")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -413,6 +414,8 @@ def Refresh_Map(map):
         if this_location_locations[i] == "Player":
             desplay_element = "\u265F"
             player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
+        if this_location_locations[i] == "Town":
+            desplay_element = "\u26C9"
 
         
         maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
@@ -573,7 +576,7 @@ def Generate_Map(map_location):
     global submap_saves
     global submap_saves_location
     global biome_list
-
+    global valid_stuff
 
     map1  = []
     map2  = []
@@ -759,6 +762,35 @@ def Generate_Map(map_location):
             map_assemble += "/"
         map_saves.append(map_assemble)
         map_saves_location.append(map_location)
+
+
+        #locations = ["Player"]
+        #locations_location = ["0,0"]
+        #locations_map_location = ["14,14"]
+
+
+        #locations
+        #finds biome
+        x = random.randint(0,29)
+        y = random.randint(0,29)
+        spot = maps_list[x][y]
+        #checks for valid stuff to put there
+        temp = valid_stuff[int(spot)].split(",")
+        #rolls for what it will be
+        print(temp)
+        if len(temp) != 0:
+            temp2 = random.randint(0,len(temp)-1)
+        structure = temp[temp2]
+        if structure == 0:
+            structure = "Town"
+        elif structure == 1:
+            structure = "Cave"
+        locations.append(structure)
+        locations_location.append(map)
+        locations_map_location.append(spot)
+
+
+
     else:
         print("you havnt made submap generation yet dummy")
 
