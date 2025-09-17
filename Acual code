@@ -415,7 +415,7 @@ def Refresh_Map(map):
             desplay_element = "\u265F"
             player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
         if this_location_locations[i] == "Town":
-            desplay_element = "\u26C9"
+            desplay_element = "\u2623"
 
         
         maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
@@ -777,19 +777,16 @@ def Generate_Map(map_location):
         #checks for valid stuff to put there
         temp = valid_stuff[int(spot)].split(",")
         #rolls for what it will be
-        print(temp)
-        if len(temp) != 0:
+        if temp[0] != '':
             temp2 = random.randint(0,len(temp)-1)
-        structure = temp[temp2]
-        if structure == 0:
-            structure = "Town"
-        elif structure == 1:
-            structure = "Cave"
-        locations.append(structure)
-        locations_location.append(map)
-        locations_map_location.append(spot)
-
-
+            structure = int(temp[temp2])   
+            if structure == 0:
+                structure = "Town"
+            elif structure == 1:
+                structure = "Cave"
+            locations.append(structure)
+            locations_location.append(map_location)
+            locations_map_location.append(str(x)+","+str(y))
 
     else:
         print("you havnt made submap generation yet dummy")
