@@ -213,10 +213,10 @@ def Refresh_hud():
         while idiotloop == 0:
             try:
                 examine = int(input("Insert # to examine\n"))
+                idiotloop = 1
             except:
                 print("Invalid input, valid inputs include",valid_awnsers)
-            else:
-                idiotloop = 1
+
 
 
 
@@ -228,8 +228,10 @@ def Refresh_hud():
                 idiotloop = 1
             else:
                 print("Invalid input, valid inputs include",valid_awnsers)
-                examine = int(input())
-        
+                try:
+                    examine = int(input())
+                except:
+                    pass
         print("---------------------------------------------")
         if examine == 2:
             print("Your opponent")
