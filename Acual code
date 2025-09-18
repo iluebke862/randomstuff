@@ -42,8 +42,6 @@ allenemies_atk = (4,2)
 #map saves
 map_saves = []
 map_saves_location = []
-submap_saves = []
-submap_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10)
 biome_desplay=("\u26C6","\u2667","\u2637","\u26F0")
@@ -52,6 +50,7 @@ valid_stuff = ("","0","0","1")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
+locations_submaps = ["N/A"]
 gamestate = 0
 
 
@@ -314,12 +313,11 @@ def Play_card(card,target):
 
 
 
-def Refresh_Map(map):
+def Refresh_Map(map,sub):
     global enemy
     global map_saves
     global map_saves_location
-    global submap_saves
-    global submap_saves_location7
+    global locations_submaps
     global locations
     global locations_location
     global locations_map_location
@@ -365,8 +363,10 @@ def Refresh_Map(map):
 
     
     #decompiliation
-    if map.startswith("S_") == True:
-        map_loading = submap_saves[submap_saves_location.index(map)]
+    if sub == True:
+        temp =map.split(",")
+
+        map_loading = locations_submaps[int(temp[1])]
     else:
         map_loading = map_saves[map_saves_location.index(map)]
     
@@ -409,20 +409,28 @@ def Refresh_Map(map):
             this_location_elements.pop(i)
             this_location_locations.pop(i)
             this_location_map_locations.pop(i)
-
     for i in range(len(this_location_elements)):
         map_location_split = this_location_map_locations[i].split(",")
        
         if this_location_locations[i] == "Player":
             desplay_element = "\u265F"
             player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
-        if this_location_locations[i] == "Town":
-            desplay_element = "\u2623"
-
-        
-        maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
-        maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
-
+        elif this_location_locations[i] == "Town":
+            desplay_element = "\u26EA"
+        elif this_location_locations[i] == "Cave":
+            desplay_element = "\u26EB"
+        else:
+            desplay_element = "ERROR"
+        templist = ("Town","Cave")
+        if maps[int(map_location_split[1])][int(map_location_split[0])*2] != "\u265F":
+            maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
+            maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
+        else:
+            if this_location_locations[i] in templist:
+                locations_location[locations.index("Player")] = "S,"+str(locations_location.index(this_location_locations))
+                return
+                #brings player to the map
+                #shuts down the refresh and does it again for the sublevel
 
 
 
@@ -449,6 +457,11 @@ def Refresh_Map(map):
             print("Invalid input, valid inputs include",valid_awnsers)
         else:
             idiotloop = 1
+    
+    
+    
+    
+    #actions
     if examine == "W" or examine =="w":
 
         listlocation = locations.index("Player")
@@ -579,6 +592,7 @@ def Generate_Map(map_location):
     global submap_saves_location
     global biome_list
     global valid_stuff
+    global locations_submaps
 
     map1  = []
     map2  = []
@@ -784,14 +798,16 @@ def Generate_Map(map_location):
             structure = int(temp[temp2])   
             if structure == 0:
                 structure = "Town"
+                locations_submaps.append(Generate_Map("S_T"))
             elif structure == 1:
                 structure = "Cave"
+                locations_submaps.append(Generate_Map("S_C"))
             locations.append(structure)
             locations_location.append(map_location)
             locations_map_location.append(str(x)+","+str(y))
 
     else:
-        print("you havnt made submap generation yet dummy")
+        locations_submaps.append("2_2_2_3_2_2_0_2_0_3_3_2_2_0_3_1_1_0_1_0_3_0_1_1_3_3_3_0_0_2_/2_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_2_/2_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_0_/2_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_0_/2_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_3_/3_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_3_/3_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_2_/3_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_3_/3_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_1_/3_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_2_/2_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_3_/2_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_2_/2_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_1_/1_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_1_/1_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_3_/1_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_2_/1_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_1_/1_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_0_/0_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_1_/0_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_1_/1_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_0_/1_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_3_/3_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_0_/3_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_0_/3_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_2_/3_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_2_/3_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_3_/3_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_1_/3_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_2_/3_2_0_3_3_3_0_3_1_3_1_3_3_2_1_1_2_2_1_3_1_0_0_1_1_3_0_2_2_0_/")
 
     
     
@@ -813,7 +829,14 @@ Generate_Map("0,0")
 while gamestate != -1:
     while gamestate == 0:
         temp = locations.index("Player")
-        Refresh_Map(locations_location[temp])
+        temp2 = locations_map_location[temp]
+        locations_map_location.reverse()
+        temp4 = locations_map_location.index(temp2)
+        locations_map_location.reverse()
+        if locations_map_location.count(temp2) > 1:
+            Refresh_Map("S,"+str(temp4),True)
+        else:
+            Refresh_Map(locations_location[temp],False)
     if gamestate == 1:
         Encoutner_setup()
     while gamestate == 1:
