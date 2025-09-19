@@ -42,10 +42,10 @@ allenemies_atk = (4,2)
 #map saves
 map_saves = []
 map_saves_location = []
-biome_list = (0,1,2,3)
-biome_mob_chance=(10,10,10,10)
-biome_desplay=("\u26C6","\u2667","\u2637","\u26F0")
-biome_mobs=("0","0,1","0,1","1")
+biome_list = (0,1,2,3,4,5)
+biome_mob_chance=(10,10,10,10,1,1)
+biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB")
+biome_mobs=("0","0,1","0,1","1","","")
 valid_stuff = ("","0","0","1")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -313,7 +313,7 @@ def Play_card(card,target):
 
 
 
-def Refresh_Map(map,sub):
+def Refresh_Map(map,sub,first):
     global enemy
     global map_saves
     global map_saves_location
@@ -365,8 +365,9 @@ def Refresh_Map(map,sub):
     #decompiliation
     if sub == True:
         temp =map.split(",")
-
         map_loading = locations_submaps[int(temp[1])]
+        if first == True:
+            return
     else:
         map_loading = map_saves[map_saves_location.index(map)]
     
@@ -381,6 +382,8 @@ def Refresh_Map(map,sub):
     1 - Trees
     2 - Plains
     3 - Mountans
+    4 - Wall
+    5 - Interaction Point
     '''
 
 
@@ -397,40 +400,41 @@ def Refresh_Map(map,sub):
             maps[x].append(" ")
             
     #I did not in fact need to enumerate, I just needed for line 384 to refrance x instead of i, and same for line 369, I think the intire problem stemed from me hurriedly finishing this up and not dubble checking it before I had to go    
-    
+    print(locations_location)
+    print(map)
     #other stuff like towns and caves
     this_location_elements = locations_location
     this_location_locations = locations
     this_location_map_locations = locations_map_location
-    for i in range(len(this_location_elements)):
-        if this_location_elements[i] == map:
-            pass
-        else:
-            this_location_elements.pop(i)
-            this_location_locations.pop(i)
-            this_location_map_locations.pop(i)
-    for i in range(len(this_location_elements)):
-        map_location_split = this_location_map_locations[i].split(",")
-       
-        if this_location_locations[i] == "Player":
-            desplay_element = "\u265F"
-            player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
-        elif this_location_locations[i] == "Town":
-            desplay_element = "\u26EA"
-        elif this_location_locations[i] == "Cave":
-            desplay_element = "\u26EB"
-        else:
-            desplay_element = "ERROR"
-        templist = ("Town","Cave")
-        if maps[int(map_location_split[1])][int(map_location_split[0])*2] != "\u265F":
-            maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
-            maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
-        else:
-            if this_location_locations[i] in templist:
-                locations_location[locations.index("Player")] = "S,"+str(locations_location.index(this_location_locations))
-                return
-                #brings player to the map
-                #shuts down the refresh and does it again for the sublevel
+    print(this_location_locations)
+    if len(this_location_elements) > 0:
+        temp99999 = 0
+        for i in range(len(this_location_elements)):
+            if this_location_elements[i-temp99999] == map:
+                pass
+            else:
+                this_location_elements.pop(i-temp99999)
+                this_location_locations.pop(i-temp99999)
+                this_location_map_locations.pop(i-temp99999)
+                temp99999 +=1
+        for i in range(len(this_location_elements)):
+            map_location_split = this_location_map_locations[i].split(",")
+        
+            if this_location_locations[i] == "Player":
+                desplay_element = "\u265F"
+                player_zone = maps[int(map_location_split[1])][int(map_location_split[0])*2]
+            elif this_location_locations[i] == "Town":
+                desplay_element = "\u26EA"
+            elif this_location_locations[i] == "Cave":
+                desplay_element = "\u26EB"
+            else:
+                desplay_element = "ERROR"
+            templist = ("Town","Cave")
+            if maps[int(map_location_split[1])][int(map_location_split[0])*2] != "\u265F":
+                maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
+                maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
+                
+
 
 
 
@@ -830,13 +834,20 @@ while gamestate != -1:
     while gamestate == 0:
         temp = locations.index("Player")
         temp2 = locations_map_location[temp]
-        locations_map_location.reverse()
-        temp4 = locations_map_location.index(temp2)
-        locations_map_location.reverse()
+        try:
+            temp4 = locations_map_location.index(temp2,1)
+        except:
+            pass
         if locations_map_location.count(temp2) > 1:
-            Refresh_Map("S,"+str(temp4),True)
+            locations_location[locations.index("Player")] = "S,"+str(temp4)
+            Refresh_Map("S,"+str(temp4),True,True)
+            locations_map_location[temp] = "15,15"
         else:
-            Refresh_Map(locations_location[temp],False)
+            if locations_location[temp].startswith("S"):
+                Refresh_Map(locations_location[temp],True,False)
+            else:
+                Refresh_Map(locations_location[temp],False,False)
+
     if gamestate == 1:
         Encoutner_setup()
     while gamestate == 1:
