@@ -42,11 +42,11 @@ allenemies_atk = (4,2)
 #map saves
 map_saves = []
 map_saves_location = []
-biome_list = (0,1,2,3,4,5)
-biome_mob_chance=(10,10,10,10,1,1)
+biome_list = (0,1,2,3)
+biome_mob_chance=(1000,1000,1000,1000,1,1)
 biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB")
 biome_mobs=("0","0,1","0,1","1","","")
-valid_stuff = ("","0","0","1")
+valid_stuff = ("","0","0","1","","")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -136,142 +136,144 @@ def Refresh_hud():
     global turn
     global Deck
     global Handdelt
-
-
-    enemyHPBardesplay = ""
-    enemyHPBardesplaycounter = 0
-    enemyHPBarrefresh = enemyHPBar
-    enemyHPBarrefresh *= enemyHP/enemyMaxHP
-    while enemyHPBardesplaycounter < enemyHPBarrefresh:
-        enemyHPBardesplay += "X"
-        enemyHPBardesplaycounter += 1
-    while enemyHPBardesplaycounter < enemyHPBar:
-        enemyHPBardesplay += "O"
-        enemyHPBardesplaycounter += 1
-    
-    HPBardesplay = ""
-    HPBardesplaycounter = 0
-    HPBarrefresh = HPBar
-    HPBarrefresh *= HP/MaxHP
-    while HPBardesplaycounter < HPBarrefresh:
-        HPBardesplay += "X"
-        HPBardesplaycounter += 1
-    while HPBardesplaycounter < HPBar:
-        HPBardesplay += "O"
-        HPBardesplaycounter += 1
-
-    #Hand dealing
-    if Handdelt == 0:
-        Hand = []
-        temp3 = 0
-        while len(Hand) < Hand_limit and temp3 == 0:
-            if len(Deck) == 0:
-                if Discard == 0:
-                    temp3 = 1
-                else:    
-                    Deck = Discard
-                    Discard = []
-            else:
-                temp = random.randint(0,len(Deck)-1)
-                temp2 = Deck[temp]
-                Deck.pop(temp)
-                Hand.append(temp2)
-        Handdelt = 1
-
-    count = 0
-    
-    #end of HP bar refresh
-    #desplay
-    print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print("2",enemydesplayname,"<",enemyHPBardesplay,">")
-    print("3")
-    print("4")
-    print("5")
-    print("6")
-    print("7")
-    print("8")
-    print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    print("10",name,"<",HPBardesplay,">")
-    #11- (Hand)
-    while count < len(Hand):
-        print(count+11,cards_names[Hand[count]])
-        count += 1
-    print(len(Hand)+11,"Pass")
-    #spacer
-    print()
-    
-    if turn == 1:
-        valid_awnsers = [2,3,4,5,6,7,8,10,len(Hand)+11]
-
-        count = 11
-        while len(valid_awnsers) - 9 < len(Hand):
-            valid_awnsers.append(count)
-            count += 1
-    
-        idiotloop = 0
-        while idiotloop == 0:
-            try:
-                examine = int(input("Insert # to examine\n"))
-                idiotloop = 1
-            except:
-                print("Invalid input, valid inputs include",valid_awnsers)
-
-
-
-
-    
-        idiotloop = 0
-        while idiotloop == 0:
-            count = valid_awnsers.count(examine)
-            if examine in valid_awnsers:
-                idiotloop = 1
-            else:
-                print("Invalid input, valid inputs include",valid_awnsers)
-                try:
-                    examine = int(input())
-                except:
-                    pass
-        print("---------------------------------------------")
-        if examine == 2:
-            print("Your opponent")
-            #might later add stuff here for closer examination if they have a certain item
-        if examine > 2 and examine < 9:
-            print("currently empty space, I might add ACCSI art here later")
-            print("probobly not though that would be a pain in the butt")
-        if examine == 10:
-            print("Its you!")
-            print("HP:",HP)
-            print("Max HP:",MaxHP)
-            if HP/MaxHP < 0.1:
-                print("might not be soon though")
-        if examine > 10 and examine < len(Hand)+11:
-            print("Action : "+cards_names[Hand[examine-11]])
-            print("Description : "+cards_description[Hand[examine-11]])
-            temp = input("Press enter to go back, input 0 to target self, 1 to target opponent\n")
-            if temp == "0" or temp == "1":
-                Play_card(Hand[examine-11],int(temp))
-        elif examine == len(Hand)+11:
-            print("End turn")
-            temp = input("Press enter to go back, input 1 to continue\n")
-            if temp == "1":
-                turn = 0
-                while len(Hand) > 0:
-                    Discard.append(Hand[0])
-                    Hand.pop(0)
+    if enemy == "":
+        pass
     else:
-        HP -= allenemies_atk[enemy]
-        print("You took",allenemies_atk[enemy],"damage")
-        turn = 1
-        Handdelt = 0
+
+        enemyHPBardesplay = ""
+        enemyHPBardesplaycounter = 0
+        enemyHPBarrefresh = enemyHPBar
+        enemyHPBarrefresh *= enemyHP/enemyMaxHP
+        while enemyHPBardesplaycounter < enemyHPBarrefresh:
+            enemyHPBardesplay += "X"
+            enemyHPBardesplaycounter += 1
+        while enemyHPBardesplaycounter < enemyHPBar:
+            enemyHPBardesplay += "O"
+            enemyHPBardesplaycounter += 1
         
+        HPBardesplay = ""
+        HPBardesplaycounter = 0
+        HPBarrefresh = HPBar
+        HPBarrefresh *= HP/MaxHP
+        while HPBardesplaycounter < HPBarrefresh:
+            HPBardesplay += "X"
+            HPBardesplaycounter += 1
+        while HPBardesplaycounter < HPBar:
+            HPBardesplay += "O"
+            HPBardesplaycounter += 1
+
+        #Hand dealing
+        if Handdelt == 0:
+            Hand = []
+            temp3 = 0
+            while len(Hand) < Hand_limit and temp3 == 0:
+                if len(Deck) == 0:
+                    if Discard == 0:
+                        temp3 = 1
+                    else:    
+                        Deck = Discard
+                        Discard = []
+                else:
+                    temp = random.randint(0,len(Deck)-1)
+                    temp2 = Deck[temp]
+                    Deck.pop(temp)
+                    Hand.append(temp2)
+            Handdelt = 1
+
+        count = 0
         
-                
+        #end of HP bar refresh
+        #desplay
+        print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print("2",enemydesplayname,"<",enemyHPBardesplay,">")
+        print("3")
+        print("4")
+        print("5")
+        print("6")
+        print("7")
+        print("8")
+        print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print("10",name,"<",HPBardesplay,">")
+        #11- (Hand)
+        while count < len(Hand):
+            print(count+11,cards_names[Hand[count]])
+            count += 1
+        print(len(Hand)+11,"Pass")
+        #spacer
+        print()
+        
+        if turn == 1:
+            valid_awnsers = [2,3,4,5,6,7,8,10,len(Hand)+11]
+
+            count = 11
+            while len(valid_awnsers) - 9 < len(Hand):
+                valid_awnsers.append(count)
+                count += 1
+        
+            idiotloop = 0
+            while idiotloop == 0:
+                try:
+                    examine = int(input("Insert # to examine\n"))
+                    idiotloop = 1
+                except:
+                    print("Invalid input, valid inputs include",valid_awnsers)
+
+
+
 
         
-    
-    print()
-    print("--------------------------------------------")
-    input("press enter to continue\n")
+            idiotloop = 0
+            while idiotloop == 0:
+                count = valid_awnsers.count(examine)
+                if examine in valid_awnsers:
+                    idiotloop = 1
+                else:
+                    print("Invalid input, valid inputs include",valid_awnsers)
+                    try:
+                        examine = int(input())
+                    except:
+                        pass
+            print("---------------------------------------------")
+            if examine == 2:
+                print("Your opponent")
+                #might later add stuff here for closer examination if they have a certain item
+            if examine > 2 and examine < 9:
+                print("currently empty space, I might add ACCSI art here later")
+                print("probobly not though that would be a pain in the butt")
+            if examine == 10:
+                print("Its you!")
+                print("HP:",HP)
+                print("Max HP:",MaxHP)
+                if HP/MaxHP < 0.1:
+                    print("might not be soon though")
+            if examine > 10 and examine < len(Hand)+11:
+                print("Action : "+cards_names[Hand[examine-11]])
+                print("Description : "+cards_description[Hand[examine-11]])
+                temp = input("Press enter to go back, input 0 to target self, 1 to target opponent\n")
+                if temp == "0" or temp == "1":
+                    Play_card(Hand[examine-11],int(temp))
+            elif examine == len(Hand)+11:
+                print("End turn")
+                temp = input("Press enter to go back, input 1 to continue\n")
+                if temp == "1":
+                    turn = 0
+                    while len(Hand) > 0:
+                        Discard.append(Hand[0])
+                        Hand.pop(0)
+        else:
+            HP -= allenemies_atk[enemy]
+            print("You took",allenemies_atk[enemy],"damage")
+            turn = 1
+            Handdelt = 0
+            
+            
+                    
+
+            
+        
+        print()
+        print("--------------------------------------------")
+        input("press enter to continue\n")
 
 def Play_card(card,target):
     global enemyHP
@@ -323,6 +325,7 @@ def Refresh_Map(map,sub,first):
     global locations_map_location
     global biome_mob_chance
     global gamestate
+    global biome_desplay
 
     map1  = []
     map2  = []
@@ -466,33 +469,37 @@ def Refresh_Map(map,sub,first):
     
     
     #actions
+    walls = [4]
     if examine == "W" or examine =="w":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if player_locationy != 0:
-            player_locationy -= 1
-            locations_map_location.pop(listlocation)
-            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if walls.count(maps[int(player_location[1])-1][int(player_location[0])*2]) > 0:
+            print("thats a wall dummy")
         else:
-            temp5 = locations_location[listlocation].split(",")
-            temp5[0] = int(temp5[0])
-            temp5[1] = int(temp5[1])
-            temp5[1] -= 1
-            temp6 = str(temp5[0])+","+str(temp5[1])
-            temp8 = locations_map_location[listlocation].split(",")
-            try:
-                temp99 = map_saves_location.index(temp6)
-            except:
-                Generate_Map(temp6)
-                temp99 = map_saves_location.index(temp6)
-            locations_location.pop(listlocation)
-            locations_location.insert(listlocation,temp6)
-            locations_map_location.pop(listlocation)
-            temp9 = str(temp8[0]+","+str(29))
-            locations_map_location.insert(listlocation,temp9)
+            if player_locationy != 0:
+                player_locationy -= 1
+                locations_map_location.pop(listlocation)
+                locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+            else:
+                temp5 = locations_location[listlocation].split(",")
+                temp5[0] = int(temp5[0])
+                temp5[1] = int(temp5[1])
+                temp5[1] -= 1
+                temp6 = str(temp5[0])+","+str(temp5[1])
+                temp8 = locations_map_location[listlocation].split(",")
+                try:
+                    temp99 = map_saves_location.index(temp6)
+                except:
+                    Generate_Map(temp6)
+                    temp99 = map_saves_location.index(temp6)
+                locations_location.pop(listlocation)
+                locations_location.insert(listlocation,temp6)
+                locations_map_location.pop(listlocation)
+                temp9 = str(temp8[0]+","+str(29))
+                locations_map_location.insert(listlocation,temp9)
 
             
     if examine == "S" or examine =="s":
@@ -501,88 +508,98 @@ def Refresh_Map(map,sub,first):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if player_locationy != 29:
-            player_locationy += 1
-            locations_map_location.pop(listlocation)
-            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if walls.count(maps[int(player_location[1])+1][int(player_location[0])*2]) > 0:
+            print("thats a wall dummy")
         else:
-            temp5 = locations_location[listlocation].split(",")
-            temp5[0] = int(temp5[0])
-            temp5[1] = int(temp5[1])
-            temp5[1] += 1
-            temp6 = str(temp5[0])+","+str(temp5[1])
-            temp8 = locations_map_location[listlocation].split(",")
-            try:
-                temp99 = map_saves_location.index(temp6)
-            except:
-                Generate_Map(temp6)
-                temp99 = map_saves_location.index(temp6)
-            locations_location.pop(listlocation)
-            locations_location.insert(listlocation,temp6)
-            locations_map_location.pop(listlocation)
-            temp9 = str(temp8[0]+","+str(0))
-            locations_map_location.insert(listlocation,temp9)
+            if player_locationy != 29:
+                player_locationy += 1
+                locations_map_location.pop(listlocation)
+                locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+            else:
+                temp5 = locations_location[listlocation].split(",")
+                temp5[0] = int(temp5[0])
+                temp5[1] = int(temp5[1])
+                temp5[1] += 1
+                temp6 = str(temp5[0])+","+str(temp5[1])
+                temp8 = locations_map_location[listlocation].split(",")
+                try:
+                    temp99 = map_saves_location.index(temp6)
+                except:
+                    Generate_Map(temp6)
+                    temp99 = map_saves_location.index(temp6)
+                locations_location.pop(listlocation)
+                locations_location.insert(listlocation,temp6)
+                locations_map_location.pop(listlocation)
+                temp9 = str(temp8[0]+","+str(0))
+                locations_map_location.insert(listlocation,temp9)
     if examine == "A" or examine == "a":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if player_locationx != 0:
-            player_locationx -= 1
-            locations_map_location.pop(listlocation)
-            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if walls.count(maps[int(player_location[1])][int(player_location[0])*2-1]) > 0:
+            print("thats a wall dummy")
         else:
-            temp5 = locations_location[listlocation].split(",")
-            temp5[0] = int(temp5[0])
-            temp5[1] = int(temp5[1])
-            temp5[0] -= 1
-            temp6 = str(temp5[0])+","+str(temp5[1])
-            temp8 = locations_map_location[listlocation].split(",")
-            try:
-                temp99 = map_saves_location.index(temp6)
-            except:
-                Generate_Map(temp6)
-                temp99 = map_saves_location.index(temp6)
-            locations_location.pop(listlocation)
-            locations_location.insert(listlocation,temp6)
-            locations_map_location.pop(listlocation)
-            temp9 = str(str(29)+","+temp8[1])
-            locations_map_location.insert(listlocation,temp9)
+            if player_locationx != 0:
+                player_locationx -= 1
+                locations_map_location.pop(listlocation)
+                locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+            else:
+                temp5 = locations_location[listlocation].split(",")
+                temp5[0] = int(temp5[0])
+                temp5[1] = int(temp5[1])
+                temp5[0] -= 1
+                temp6 = str(temp5[0])+","+str(temp5[1])
+                temp8 = locations_map_location[listlocation].split(",")
+                try:
+                    temp99 = map_saves_location.index(temp6)
+                except:
+                    Generate_Map(temp6)
+                    temp99 = map_saves_location.index(temp6)
+                locations_location.pop(listlocation)
+                locations_location.insert(listlocation,temp6)
+                locations_map_location.pop(listlocation)
+                temp9 = str(str(29)+","+temp8[1])
+                locations_map_location.insert(listlocation,temp9)
     if examine == "D" or examine == "d":
 
         listlocation = locations.index("Player")
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if player_locationx != 29:
-            player_locationx += 1
-            locations_map_location.pop(listlocation)
-            locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+        if walls.count(maps[int(player_location[1])+1][int(player_location[0])*2+1]) > 0:
+            print("thats a wall dummy")
         else:
-            temp5 = locations_location[listlocation].split(",")
-            temp5[0] = int(temp5[0])
-            temp5[1] = int(temp5[1])
-            temp5[0] += 1
-            temp6 = str(temp5[0])+","+str(temp5[1])
-            temp8 = locations_map_location[listlocation].split(",")
-            try:
-                temp99 = map_saves_location.index(temp6)
-            except:
-                Generate_Map(temp6)
-                temp99 = map_saves_location.index(temp6)
-            locations_location.pop(listlocation)
-            locations_location.insert(listlocation,temp6)
-            locations_map_location.pop(listlocation)
-            temp9 = str(str(0)+","+temp8[1])
-            locations_map_location.insert(listlocation,temp9)
+            if player_locationx != 29:
+                player_locationx += 1
+                locations_map_location.pop(listlocation)
+                locations_map_location.insert(listlocation,(str(player_locationx)+","+str(player_locationy)))
+            else:
+                temp5 = locations_location[listlocation].split(",")
+                temp5[0] = int(temp5[0])
+                temp5[1] = int(temp5[1])
+                temp5[0] += 1
+                temp6 = str(temp5[0])+","+str(temp5[1])
+                temp8 = locations_map_location[listlocation].split(",")
+                try:
+                    temp99 = map_saves_location.index(temp6)
+                except:
+                    Generate_Map(temp6)
+                    temp99 = map_saves_location.index(temp6)
+                locations_location.pop(listlocation)
+                locations_location.insert(listlocation,temp6)
+                locations_map_location.pop(listlocation)
+                temp9 = str(str(0)+","+temp8[1])
+                locations_map_location.insert(listlocation,temp9)
     if examine == "W" or examine =="w" or examine == "S" or examine =="s" or examine == "A" or examine == "a" or examine == "D" or examine == "d":
     #mob encounters
         if random.randint(1,biome_mob_chance[biome_desplay.index(player_zone)]) == 1:
-            mobs = biome_mobs[biome_desplay.index(player_zone)].split(",")
-            temp = random.randint(0,len(mobs)-1)
-            enemy = int(mobs[int(temp)])
-            gamestate = 1
+            if biome_mobs[biome_desplay.index(player_zone)] != '':
+                mobs = biome_mobs[biome_desplay.index(player_zone)].split(",")
+                temp = random.randint(0,len(mobs)-1)
+                enemy = int(mobs[int(temp)])
+                gamestate = 1
             
 
 
@@ -811,7 +828,7 @@ def Generate_Map(map_location):
             locations_map_location.append(str(x)+","+str(y))
 
     else:
-        locations_submaps.append("2_2_2_3_2_2_0_2_0_3_3_2_2_0_3_1_1_0_1_0_3_0_1_1_3_3_3_0_0_2_/2_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_2_/2_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_0_/2_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_0_/2_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_3_/3_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_3_/3_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_2_/3_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_3_/3_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_1_/3_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_2_/2_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_3_/2_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_2_/2_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_1_/1_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_1_/1_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_3_/1_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_2_/1_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_1_/1_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_0_/0_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_1_/0_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_1_/1_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_0_/1_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_3_/3_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_0_/3_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_0_/3_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_2_/3_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_2_/3_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_3_/3_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_1_/3_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_2_/3_2_0_3_3_3_0_3_1_3_1_3_3_2_1_1_2_2_1_3_1_0_0_1_1_3_0_2_2_0_/")
+        locations_submaps.append("4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/4_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_4_/4_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_4_/4_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_4_/4_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_4_/4_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_4_/4_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_4_/4_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_4_/4_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_4_/4_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_4_/4_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_4_/4_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_4_/4_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_4_/4_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_4_/4_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_4_/4_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_4_/4_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_4_/4_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_4_/4_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_4_/4_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_4_/4_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_4_/4_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_4_/4_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_4_/4_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_4_/4_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_4_/4_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_4_/4_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_4_/4_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_4_/4_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_4_/4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/")
 
     
     
