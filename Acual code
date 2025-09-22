@@ -43,10 +43,10 @@ allenemies_atk = (4,2)
 map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(1000,1000,1000,1000,1,1)
-biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB")
-biome_mobs=("0","0,1","0,1","1","","")
-valid_stuff = ("","0","0","1","","")
+biome_mob_chance=(100000,100000,100000,100000,1,1,1,1)
+biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB","\u26EA","\u26EB")
+biome_mobs=("0","0,1","0,1","1","","","","")
+valid_stuff = ("","0","0","1","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -403,14 +403,12 @@ def Refresh_Map(map,sub,first):
             maps[x].append(" ")
             
     #I did not in fact need to enumerate, I just needed for line 384 to refrance x instead of i, and same for line 369, I think the intire problem stemed from me hurriedly finishing this up and not dubble checking it before I had to go    
-    print(locations_location)
-    print(map)
+
     #other stuff like towns and caves
-    this_location_elements = locations_location
-    this_location_locations = locations
-    this_location_map_locations = locations_map_location
-    print(this_location_locations)
-    if len(this_location_elements) > 0:
+    this_location_elements = locations_location.copy()
+    this_location_locations = locations.copy()
+    this_location_map_locations = locations_map_location.copy()
+    if len(this_location_locations) > 0:
         temp99999 = 0
         for i in range(len(this_location_elements)):
             if this_location_elements[i-temp99999] == map:
@@ -430,13 +428,14 @@ def Refresh_Map(map,sub,first):
                 desplay_element = "\u26EA"
             elif this_location_locations[i] == "Cave":
                 desplay_element = "\u26EB"
+            elif this_location_locations[i] == "Exit":
+                desplay_element = "\u26CB"
             else:
                 desplay_element = "ERROR"
             templist = ("Town","Cave")
             if maps[int(map_location_split[1])][int(map_location_split[0])*2] != "\u265F":
                 maps[int(map_location_split[1])].pop(int(map_location_split[0])*2) 
                 maps[int(map_location_split[1])].insert(int(map_location_split[0])*2,desplay_element)
-                
 
 
 
@@ -445,12 +444,12 @@ def Refresh_Map(map,sub,first):
 
 
     #printing the map
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     for x in range(30):
         for i in maps[x]:
             print(i,end="")
         print()
-    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     valid_awnsers = ["W","A","S","D","w","a","s","d"]
     idiotloop = 0
     while idiotloop == 0:
@@ -476,7 +475,7 @@ def Refresh_Map(map,sub,first):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if walls.count(maps[int(player_location[1])-1][int(player_location[0])*2]) > 0:
+        if walls.count(biome_desplay.index(maps[int(player_location[1])-1][int(player_location[0])*2])) > 0:
             print("thats a wall dummy")
         else:
             if player_locationy != 0:
@@ -508,7 +507,7 @@ def Refresh_Map(map,sub,first):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if walls.count(maps[int(player_location[1])+1][int(player_location[0])*2]) > 0:
+        if walls.count(biome_desplay.index(maps[int(player_location[1])+1][int(player_location[0])*2])) > 0:
             print("thats a wall dummy")
         else:
             if player_locationy != 29:
@@ -538,7 +537,7 @@ def Refresh_Map(map,sub,first):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if walls.count(maps[int(player_location[1])][int(player_location[0])*2-1]) > 0:
+        if walls.count(biome_desplay.index(maps[int(player_location[1])][int(player_location[0])*2-2])) > 0:
             print("thats a wall dummy")
         else:
             if player_locationx != 0:
@@ -568,7 +567,7 @@ def Refresh_Map(map,sub,first):
         player_location = locations_map_location[listlocation].split(",")
         player_locationx = int(player_location[0])
         player_locationy = int(player_location[1])
-        if walls.count(maps[int(player_location[1])+1][int(player_location[0])*2+1]) > 0:
+        if walls.count(biome_desplay.index(maps[int(player_location[1])+1][int(player_location[0])*2+2])) > 0:
             print("thats a wall dummy")
         else:
             if player_locationx != 29:
@@ -819,16 +818,36 @@ def Generate_Map(map_location):
             structure = int(temp[temp2])   
             if structure == 0:
                 structure = "Town"
-                locations_submaps.append(Generate_Map("S_T"))
+                Generate_Map("S_T")
             elif structure == 1:
                 structure = "Cave"
-                locations_submaps.append(Generate_Map("S_C"))
+                Generate_Map("S_C")
             locations.append(structure)
             locations_location.append(map_location)
             locations_map_location.append(str(x)+","+str(y))
 
     else:
+        locations_submaps.append("F_0")
+        locations.append("Exit")
+        locations_location.append("S,"+str(len(locations)))
+        locations_map_location.append("13,13")
+        
+        
         locations_submaps.append("4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/4_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_4_/4_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_4_/4_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_4_/4_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_4_/4_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_4_/4_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_4_/4_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_4_/4_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_4_/4_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_4_/4_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_4_/4_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_4_/4_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_4_/4_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_4_/4_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_4_/4_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_4_/4_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_4_/4_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_4_/4_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_4_/4_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_4_/4_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_4_/4_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_4_/4_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_4_/4_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_4_/4_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_4_/4_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_4_/4_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_4_/4_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_4_/4_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_4_/4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/")
+        
+def Exit():
+    global locations, locations_location, locations_map_location, gamestate
+    player_location = locations.index("Player")
+    print(locations)
+    print(locations_location)
+    print(locations_map_location)
+    print(int(locations_location[player_location].split(",")[1]))
+    locations_location[player_location] = locations_location[int(locations_location[player_location].split(",")[1])]
+    locations_map_location[player_location] = locations_map_location[int(locations_location[player_location].split(",")[1])]
+    print(locations)
+    print(locations_location)
+    print(locations_map_location)
+    gamestate = -1
 
     
     
@@ -845,7 +864,7 @@ def Generate_Map(map_location):
 
 
 
-
+func_list = [Exit]
 Generate_Map("0,0")
 while gamestate != -1:
     while gamestate == 0:
@@ -856,9 +875,14 @@ while gamestate != -1:
         except:
             pass
         if locations_map_location.count(temp2) > 1:
-            locations_location[locations.index("Player")] = "S,"+str(temp4)
-            Refresh_Map("S,"+str(temp4),True,True)
-            locations_map_location[temp] = "15,15"
+            if locations_submaps[temp4].startswith("N/A"):          
+                pass
+            elif locations_submaps[temp4].startswith("F_"):
+                func_list[int(locations_submaps[temp4].split("_")[1])]()
+            else:
+                locations_location[locations.index("Player")] = "S,"+str(temp4)
+                Refresh_Map("S,"+str(temp4),True,True)
+                locations_map_location[temp] = "15,15"
         else:
             if locations_location[temp].startswith("S"):
                 Refresh_Map(locations_location[temp],True,False)
