@@ -43,10 +43,10 @@ allenemies_atk = (4,2)
 map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(100000,100000,100000,100000,1,1,1,1)
-biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB","\u26EA","\u26EB")
-biome_mobs=("0","0,1","0,1","1","","","","")
-valid_stuff = ("","0","0","1","","","","")
+biome_mob_chance=(100000,100000,100000,100000,1,1,1,1,1)
+biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB","\u26EA","\u26EB","\u2630")
+biome_mobs=("0","0,1","0,1","1","","","","","")
+valid_stuff = ("","0","0","1","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -825,47 +825,37 @@ def Generate_Map(map_location):
             locations.append(structure)
             locations_location.append(map_location)
             locations_map_location.append(str(x)+","+str(y))
+            
+            
+            locations_submaps.append("F_0")
+            locations.append("Exit")
+            locations_location.append("S,"+str(len(locations)-2))
+            locations_map_location.append("13,13")
 
     else:
-        locations_submaps.append("F_0")
-        locations.append("Exit")
-        locations_location.append("S,"+str(len(locations)))
-        locations_map_location.append("13,13")
+
         
         
-        locations_submaps.append("4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/4_2_2_0_3_0_3_3_2_2_1_2_2_0_3_1_1_0_1_0_3_1_0_0_0_3_2_2_0_4_/4_2_2_2_0_2_3_3_3_2_2_1_0_1_2_1_2_0_2_0_0_3_1_2_3_3_0_0_1_4_/4_1_0_2_2_1_0_1_0_0_1_3_0_2_3_2_3_0_1_2_1_0_3_2_2_2_2_3_3_4_/4_3_3_0_0_0_3_2_0_0_1_3_0_0_0_3_2_1_3_2_0_2_3_2_1_1_3_2_3_4_/4_1_0_2_3_0_2_2_0_1_1_3_0_0_3_0_3_0_0_3_3_1_1_2_3_0_0_0_2_4_/4_3_2_2_3_1_2_1_1_0_1_1_2_3_0_3_3_1_3_3_3_0_0_3_1_2_3_1_3_4_/4_0_3_0_3_0_3_2_3_2_0_1_0_2_2_1_0_3_3_1_2_2_1_3_3_3_2_0_1_4_/4_2_0_3_2_2_2_0_0_2_3_2_1_2_1_0_2_3_3_0_2_1_0_2_1_2_2_0_2_4_/4_0_2_1_0_1_3_1_1_3_0_2_1_3_2_3_3_0_2_0_2_2_1_2_3_3_2_0_3_4_/4_1_2_2_0_1_1_2_2_1_1_3_3_2_2_0_1_2_3_1_3_0_3_0_0_3_3_3_2_4_/4_2_2_3_2_3_3_3_3_2_0_2_1_3_3_1_3_1_1_0_2_1_1_1_1_2_1_0_2_4_/4_0_0_3_0_1_2_2_0_1_1_1_0_1_1_1_2_2_3_2_0_1_2_3_3_3_2_1_0_4_/4_0_0_1_0_2_3_0_3_2_1_0_1_3_3_1_1_1_1_0_1_0_1_1_3_3_1_3_3_4_/4_0_3_3_0_1_3_0_3_3_1_2_0_3_1_0_1_3_2_2_2_1_1_2_2_1_3_0_0_4_/4_1_3_3_3_2_1_1_1_3_0_3_0_3_2_0_2_0_1_3_3_0_2_2_2_1_2_1_0_4_/4_3_2_0_2_3_3_1_3_0_2_1_0_2_2_1_3_2_2_3_3_3_2_0_2_1_2_0_3_4_/4_3_2_1_2_2_2_2_1_0_0_0_0_0_3_1_2_2_2_3_1_2_1_3_3_3_2_3_3_4_/4_3_0_1_2_2_1_2_0_3_2_0_0_0_2_2_1_2_3_3_1_0_3_3_1_2_0_1_1_4_/4_1_2_2_0_2_1_2_1_3_3_3_3_1_1_3_3_0_1_2_0_3_2_3_2_1_1_1_2_4_/4_3_1_0_0_2_3_1_3_1_0_1_2_1_2_1_1_0_3_3_2_2_2_1_3_2_1_0_3_4_/4_0_3_0_0_0_0_1_0_1_3_0_1_2_2_2_2_3_0_0_0_3_2_2_1_2_3_2_0_4_/4_2_2_2_0_3_3_2_2_3_2_1_3_3_0_0_2_0_0_3_2_2_0_1_3_3_2_2_2_4_/4_2_2_1_0_2_1_1_1_3_0_0_0_0_1_2_2_1_3_3_2_2_3_3_1_0_2_3_2_4_/4_3_3_3_0_3_1_3_0_0_2_0_3_0_1_2_2_1_2_0_3_2_2_0_3_2_1_1_2_4_/4_3_1_1_0_2_1_3_1_2_2_1_0_2_0_0_1_0_3_0_1_1_1_0_1_0_2_1_0_4_/4_1_0_0_3_1_1_3_2_0_3_1_2_3_0_3_2_2_2_1_0_3_3_1_3_1_2_2_0_4_/4_0_1_0_3_3_2_1_0_3_1_0_1_2_3_3_1_1_3_1_2_3_0_1_3_2_1_3_3_4_/4_0_1_0_2_0_3_0_1_1_0_3_0_3_1_1_1_3_1_1_2_0_0_2_2_1_1_3_3_4_/4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/")
+        locations_submaps.append("4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_4_4_4_4_4_4_4_4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_4_8_8_8_8_8_8_4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_4_8_8_8_8_8_8_4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_4_8_8_8_8_8_8_4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/4_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_8_4_/")
         
 def Exit():
-    global locations, locations_location, locations_map_location, gamestate
+    global locations, locations_location, locations_map_location, out
     player_location = locations.index("Player")
-    print(locations)
-    print(locations_location)
-    print(locations_map_location)
-    print(int(locations_location[player_location].split(",")[1]))
-    locations_location[player_location] = locations_location[int(locations_location[player_location].split(",")[1])]
-    locations_map_location[player_location] = locations_map_location[int(locations_location[player_location].split(",")[1])]
-    print(locations)
-    print(locations_location)
-    print(locations_map_location)
-    gamestate = -1
+    temp = str(locations_map_location[int(locations_location[player_location].split(",")[1])])
+    temp2 = str(locations_location[int(locations_location[player_location].split(",")[1])])    
+    locations_location[player_location] = temp2
+    locations_map_location[player_location] = temp
+    out = True
 
     
     
     
-    
-    
-    
-    
-
-
-
-
-
 
 
 
 func_list = [Exit]
 Generate_Map("0,0")
+out = False
 while gamestate != -1:
     while gamestate == 0:
         temp = locations.index("Player")
@@ -875,14 +865,21 @@ while gamestate != -1:
         except:
             pass
         if locations_map_location.count(temp2) > 1:
-            if locations_submaps[temp4].startswith("N/A"):          
-                pass
-            elif locations_submaps[temp4].startswith("F_"):
-                func_list[int(locations_submaps[temp4].split("_")[1])]()
+            if out == True:
+                if locations_location[temp].startswith("S"):
+                    Refresh_Map(locations_location[temp],True,False)
+                else:
+                    Refresh_Map(locations_location[temp],False,False)
+                out = False
             else:
-                locations_location[locations.index("Player")] = "S,"+str(temp4)
-                Refresh_Map("S,"+str(temp4),True,True)
-                locations_map_location[temp] = "15,15"
+                if locations_submaps[temp4].startswith("N/A"):          
+                    pass
+                elif locations_submaps[temp4].startswith("F_"):
+                    func_list[int(locations_submaps[temp4].split("_")[1])]()
+                else:
+                    locations_location[locations.index("Player")] = "S,"+str(temp4)
+                    Refresh_Map("S,"+str(temp4),True,True)
+                    locations_map_location[temp] = "15,15"
         else:
             if locations_location[temp].startswith("S"):
                 Refresh_Map(locations_location[temp],True,False)
