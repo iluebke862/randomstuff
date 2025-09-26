@@ -144,7 +144,9 @@ def Refresh_hud():
         pass
     else:
         for i in range(0,len(enemy)):
-            enemyHPBardesplay.append("")
+            if len(enemyHPBardesplay) < len(enemy): 
+                enemyHPBardesplay.append("")
+            enemyHPBardesplay[i] = ""
             enemyHPBardesplaycounter = 0
             enemyHPBarrefresh = enemyHPBar[i]
             enemyHPBarrefresh *= enemyHP[i]/enemyMaxHP[i]
@@ -291,7 +293,7 @@ def Refresh_hud():
                         Discard.append(Hand[0])
                         Hand.pop(0)
         else:
-            for i in range(1,len(enemy)):
+            for i in range(0,len(enemy)):
                 HP -= allenemies_atk[enemy[i]]
                 print("You took",allenemies_atk[enemy[i]],"damage")
                 turn = 1
@@ -314,7 +316,7 @@ def Play_card(card,target):
     
     
     if target > 0:
-        enemyHP[target] -= cards_atk[card]
+        enemyHP[target-1] -= cards_atk[card]
     else:
         HP -= cards_atk[card]
     print("you did ",cards_atk[card], "damage")
@@ -323,17 +325,17 @@ def Play_card(card,target):
 
 
     #prevent overheal
-    if enemyHP[target] > enemyMaxHP[target]:
-        enemyHP[target] = enemyMaxHP[target]
+    if enemyHP[target-1] > enemyMaxHP[target-1]:
+        enemyHP[target-1] = enemyMaxHP[target-1]
     if HP > MaxHP:
         HP = MaxHP
     #check to see if the guy is dead
-    if enemyHP[target] < 0:
-        enemy.pop[target]
-        enemydesplayname.pop[target]
-        enemyHP.pop[target]
-        enemyHPBar.pop[target]
-        enemyHPBardesplay.pop[target]
+    if enemyHP[target-1] < 0:
+        enemy.pop[target-1]
+        enemydesplayname.pop[target-1]
+        enemyHP.pop[target-1]
+        enemyHPBar.pop[target-1]
+        enemyHPBardesplay.pop[target-1]
 
 
     #put card in discard
@@ -840,7 +842,7 @@ def Refresh_Map(map,sub,first):
     if examine == "W" or examine =="w" or examine == "S" or examine =="s" or examine == "A" or examine == "a" or examine == "D" or examine == "d":
     #mob encounters
         if random.randint(1,biome_mob_chance[biome_desplay.index(player_zone)]) == 1:
-            if random.randint(10,10) == 10:
+            if random.randint(1,10) == 10:
                 ts = 2
             else:
                 ts = 1
