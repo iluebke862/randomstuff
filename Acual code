@@ -33,30 +33,32 @@ while indecisiveloop == 1:
             print("---------------------------")
             print("for bugtesting, invalidates speedruns if that ever becomes a thing")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:100,ATK:1,DF:1,Hand:2")
+            print("Stats: HP:100,ATK:1,MATK:1,DF:1,Hand:2")
             print("---------------------------")
             a = input("Confirm?")
             if a == "Yes" or a == "yes":
                 indecisiveloop = 0
+                MaxHP = 10
                 HP = 10
                 ATK = 1
+                MATK = 1
                 DF = 1
-                MaxHP = 10
                 Deck = [0,1,2,3]
                 Hand_limit = 2
         if a == "1":
             print("---------------------------")
             print("Classic rouge")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:5,ATK:2,DF:0.9,Hand:3")
+            print("Stats: HP:5,ATK:2,MATK:1,DF:0.9,Hand:3")
             print("---------------------------")
             a = input("Confirm?")
             if a == "Yes" or a == "yes":
                 indecisiveloop = 0
+                MaxHP = 5
                 HP = 5
                 ATK = 2
+                MATK = 1
                 DF = 0.9
-                MaxHP = 5
                 Deck = [0,1,2,3]
                 Hand_limit = 3
 
@@ -73,7 +75,7 @@ Discard = []
 #moves data
 cards_atk = (1,2,-1,-2)
 cards_def = (1,2,3,4)
-cards_type = (0,0,0,0)
+cards_type = (0,0,1,1)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage")
 #typings
@@ -92,6 +94,7 @@ enemyHPBardesplay = []
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
+allenemies_week = ("1","1")
 #map saves
 map_saves = []
 map_saves_location = []
@@ -360,29 +363,48 @@ def Play_card(card,target):
     global cards_type
     global cards_atk
     global cards_def
-    
+
+    #base dam
     damagey = cards_atk[card]
-    if target > 0:
-        enemyHP[target-1] -= (cards_atk[card]*2)
-    else:
-        HP -= (cards_atk[card]*2)
-    print("you did ",(cards_atk[card]*2), "damage")
     
+    
+    #additional stat dam
+    if cards_type[card] == 0:
+        damagey *= ATK
+    if cards_type[card] == 1:
+        damagey *= MATK
+    
+    
+    
+    
+    if target > 0:
+        weeknesses = allenemies_week[target-1].split("_")
+        for i in range(0,len(weeknesses)):
+            weeknesses[i] = int(weeknesses[i])
+        if cards_type[card] in weeknesses:
+            damagey *=2
+        enemyHP[target-1] -= damagey
+    else:
+        HP -= damagey
+    print("you did ",damagey, "damage")
+
 
 
 
     #prevent overheal
-    if enemyHP[target-1] > enemyMaxHP[target-1]:
-        enemyHP[target-1] = enemyMaxHP[target-1]
+    if target > 0:
+        if enemyHP[target-1] > enemyMaxHP[target-1]:
+            enemyHP[target-1] = enemyMaxHP[target-1]
     if HP > MaxHP:
         HP = MaxHP
     #check to see if the guy is dead
-    if enemyHP[target-1] < 0:
-        enemy.pop[target-1]
-        enemydesplayname.pop[target-1]
-        enemyHP.pop[target-1]
-        enemyHPBar.pop[target-1]
-        enemyHPBardesplay.pop[target-1]
+    if target >0:
+        if enemyHP[target-1] < 0:
+            enemy.pop[target-1]
+            enemydesplayname.pop[target-1]
+            enemyHP.pop[target-1]
+            enemyHPBar.pop[target-1]
+            enemyHPBardesplay.pop[target-1]
 
 
     #put card in discard
