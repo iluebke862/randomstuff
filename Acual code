@@ -12,18 +12,58 @@ print("Because im lazy and don't want to think of proper game design right now, 
 print("You are going to be playing a equivilent of offbrand pokemon but you don't have any pokemon")
 print("what I just said is totaly wrong and this is accualy a deck building game")
 
-
+indecisiveloop = 1
+valid = ["1"]
+if name == "bug":
+    valid.append("0")
+while indecisiveloop == 1:
+    input("Press enter to continue")
+    print("Pick your class")
+    print("---------------------------")
+    if name == "bug":
+        print("0 Bugtester")
+    print("1 Rouge")
+    print("2 Warrior (N/A)")
+    print("3 Mage (N/A)")
+    print("4 Priest (N/A)")
+    print("---------------------------")
+    a = input()
+    if a in valid:
+        if a == "0":
+            print("---------------------------")
+            print("for bugtesting, invalidates speedruns if that ever becomes a thing")
+            print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
+            print("Stats: HP:100,ATK:1,DF:1,Hand:2")
+            print("---------------------------")
+            a = input("Confirm?")
+            if a == "Yes" or a == "yes":
+                indecisiveloop = 0
+                HP = 10
+                ATK = 1
+                DF = 1
+                MaxHP = 10
+                Deck = [0,1,2,3]
+                Hand_limit = 2
+        if a == "1":
+            print("---------------------------")
+            print("Classic rouge")
+            print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
+            print("Stats: HP:5,ATK:2,DF:0.9,Hand:3")
+            print("---------------------------")
+            a = input("Confirm?")
+            if a == "Yes" or a == "yes":
+                indecisiveloop = 0
+                HP = 5
+                ATK = 2
+                DF = 0.9
+                MaxHP = 5
+                Deck = [0,1,2,3]
+                Hand_limit = 3
 
 
 
 #Base Player setup
-HP = 10
-ATK = 1
-DF = 1
-HP = 10
-MaxHP = 10
-Deck = [0,1,2,3]
-Hand_limit = 2
+
 Discard = []
 
 
@@ -33,10 +73,11 @@ Discard = []
 #moves data
 cards_atk = (1,2,-1,-2)
 cards_def = (1,2,3,4)
+cards_type = (0,0,0,0)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage")
 #typings
-#
+#0 pysical
 #
 #
 #
@@ -140,6 +181,7 @@ def Refresh_hud():
     global Deck
     global Handdelt
     global name
+    global DF
     if enemy == "":
         pass
     else:
@@ -294,8 +336,8 @@ def Refresh_hud():
                         Hand.pop(0)
         else:
             for i in range(0,len(enemy)):
-                HP -= allenemies_atk[enemy[i]]
-                print("You took",allenemies_atk[enemy[i]],"damage")
+                HP -= (allenemies_atk[enemy[i]]/DF)
+                print("You took",(allenemies_atk[enemy[i]]/DF),"damage")
                 turn = 1
                 Handdelt = 0
             
@@ -313,13 +355,18 @@ def Play_card(card,target):
     global enemyMaxHP
     global HP
     global MaxHP
+    global DF
+    global ATK
+    global cards_type
+    global cards_atk
+    global cards_def
     
-    
+    damagey = cards_atk[card]
     if target > 0:
-        enemyHP[target-1] -= cards_atk[card]
+        enemyHP[target-1] -= (cards_atk[card]*2)
     else:
-        HP -= cards_atk[card]
-    print("you did ",cards_atk[card], "damage")
+        HP -= (cards_atk[card]*2)
+    print("you did ",(cards_atk[card]*2), "damage")
     
 
 
