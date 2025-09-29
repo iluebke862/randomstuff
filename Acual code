@@ -75,13 +75,13 @@ Discard = []
 #moves data
 cards_atk = (1,2,-1,-2)
 cards_def = (1,2,3,4)
-cards_type = (0,0,1,1)
+cards_type = (0,0,1_2,1_2)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage")
 #typings
 #0 pysical
-#
-#
+#1 Magic
+#2 Holy
 #
 #
 #enemies data
@@ -94,7 +94,7 @@ enemyHPBardesplay = []
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
-allenemies_week = ("1","1")
+allenemies_week = ("1","1_2")
 #map saves
 map_saves = []
 map_saves_location = []
@@ -378,27 +378,35 @@ def Play_card(card,target):
     
     
     if target > 0:
-        weeknesses = allenemies_week[target-1].split("_")
+        weeknesses = allenemies_week[allenemies_desplayname.index(enemydesplayname[target-1])].split("_")
         for i in range(0,len(weeknesses)):
             weeknesses[i] = int(weeknesses[i])
         if cards_type[card] in weeknesses:
             damagey *=2
+        if damagey < 0 and 2 in weeknesses:
+            damagey *=-1
         enemyHP[target-1] -= damagey
     else:
         HP -= damagey
+    if name == "bug":
+        print(weeknesses)
     print("you did ",damagey, "damage")
 
 
 
 
     #prevent overheal
+    if name == "bug":
+        print("prevent overheal")
     if target > 0:
         if enemyHP[target-1] > enemyMaxHP[target-1]:
             enemyHP[target-1] = enemyMaxHP[target-1]
     if HP > MaxHP:
         HP = MaxHP
     #check to see if the guy is dead
-    if target >0:
+    if name == "bug":
+        print("check to see if the guy is dead")
+    if target > 0:
         if enemyHP[target-1] < 0:
             enemy.pop[target-1]
             enemydesplayname.pop[target-1]
@@ -406,7 +414,8 @@ def Play_card(card,target):
             enemyHPBar.pop[target-1]
             enemyHPBardesplay.pop[target-1]
 
-
+    if name == "bug":
+        print("discard")
     #put card in discard
     Discard.append(card)
     Hand.remove(card)
