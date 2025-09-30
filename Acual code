@@ -447,27 +447,21 @@ def Play_card(card,target):
     if name == "bug":
         print("check to see if the guy is dead")
     if target > 0:
-        if name == "bug":
-            print("450")
         if enemyHP[target-1] <= 0:
-            if name == "bug":
-                print("453")
-                print(enemy)
-            enemy.pop[target-1]
-            if name == "bug":
-                print("456")
-            enemydesplayname.pop[target-1]
-            if name == "bug":
-                print("459")
-            enemyHP.pop[target-1]
-            if name == "bug":
-                print("461")
-            enemyHPBar.pop[target-1]
-            if name == "bug":
-                print("465")
-            enemyHPBardesplay.pop[target-1]
-            if name == "bug":
-                print("468")
+            if len(enemy) == 1:
+                enemy = []
+                enemydesplayname = []
+                enemyHP = []
+                enemyHPBar = []
+                enemyHPBardesplay = []
+                enemyHPBardesplaycounter = []
+                enemyMaxHP = []
+            else:
+                enemy.pop[target-1]
+                enemydesplayname.pop[target-1]
+                enemyHP.pop[target-1]
+                enemyHPBar.pop[target-1]
+                enemyHPBardesplay.pop[target-1]
 
     if name == "bug":
         print("discard")
