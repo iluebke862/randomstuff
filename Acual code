@@ -33,23 +33,27 @@ while indecisiveloop == 1:
             print("---------------------------")
             print("for bugtesting, invalidates speedruns if that ever becomes a thing")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:100,ATK:1,MATK:1,DF:1,Hand:2")
+            print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,Hand:2")
             print("---------------------------")
             a = input("Confirm?")
             if a == "Yes" or a == "yes":
                 indecisiveloop = 0
-                MaxHP = 10
-                HP = 10
+                MaxHP = 100
+                HP = 100
                 ATK = 1
                 MATK = 1
                 DF = 1
-                Deck = [0,1,2,3]
-                Hand_limit = 2
+                AP = 0
+                MAP = 100
+                MP = 0
+                MMP = 100
+                Deck = [0,0,1,1,2,2,3,3]
+                Hand_limit = 8
         if a == "1":
             print("---------------------------")
             print("Classic rouge")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:5,ATK:2,MATK:1,DF:0.9,Hand:3")
+            print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,Hand:3")
             print("---------------------------")
             a = input("Confirm?")
             if a == "Yes" or a == "yes":
@@ -59,7 +63,11 @@ while indecisiveloop == 1:
                 ATK = 2
                 MATK = 1
                 DF = 0.9
-                Deck = [0,1,2,3]
+                AP = 0
+                MAP = 10
+                MP = 0
+                MMP = 7
+                Deck = [4,4,4,4,5,5,6,6]
                 Hand_limit = 3
 
 
@@ -72,17 +80,20 @@ Discard = []
 
 
 #Data
+status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)" }
 #moves data
-cards_atk = (1,2,-1,-2)
-cards_def = (1,2,3,4)
-cards_type = (0,0,1_2,1_2)
-cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2")
-cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage")
+cards_atk = (1,2,-1,-2,2,4)
+cards_def = (0,0,0,0,0,0)
+cards_type = (0,0,1_2,1_2,0,0)
+cards_ap_cost = (0,0,0,0,0,2)
+cards_mp_cost = (0,0,0,0,0,1)
+cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal")
+cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal\nAP:2\nMP:1\n"+status_description["Conceal"])
 #typings
 #0 pysical
 #1 Magic
 #2 Holy
-#
+#3 Dark
 #
 #enemies data
 enemy = []
@@ -133,7 +144,13 @@ def Encoutner_setup():
     global HP
     global Handdelt
     global enemy
+    global AP
+    global MAP
+    global MP
+    global MMP
     Handdelt = 0
+    MP = MMP
+    AP = MAP
 
 
 
@@ -185,6 +202,10 @@ def Refresh_hud():
     global Handdelt
     global name
     global DF
+    global AP
+    global MAP
+    global MP
+    global MMP
     if enemy == "":
         pass
     else:
@@ -275,6 +296,12 @@ def Refresh_hud():
         print()
         
         if turn == 1:
+            AP += MAP/10
+            MP += MAP/10
+            if AP > MAP:
+                AP = MAP
+            if MP > MMP:
+                MP = MMP
             valid_awnsers = [2,3,4,5,6,7,8,10,len(Hand)+11]
 
             count = 11
@@ -325,6 +352,10 @@ def Refresh_hud():
                 try:
                     int(temp)
                     if int(temp) > len(enemy) or int(temp) == 0:
+                        print("Invalid target")
+                        raise Exception()
+                    if cards_ap_cost[Hand[examine-11]] > AP or cards_mp_cost[Hand[examine-11]] > MP:
+                        print("Not enough Energy/Mana")
                         raise Exception()
                     Play_card(Hand[examine-11],int(temp))
                 except:
@@ -354,12 +385,14 @@ def Refresh_hud():
         input("press enter to continue\n")
 
 def Play_card(card,target):
+    global enemy, enemydesplayname, enemyHPBar, enemyHPBardesplaycounter, enemyHPBardesplay, enemyHPBarrefresh
     global enemyHP
     global enemyMaxHP
     global HP
     global MaxHP
     global DF
     global ATK
+    global MATK
     global cards_type
     global cards_atk
     global cards_def
@@ -376,7 +409,8 @@ def Play_card(card,target):
     
     
     
-    
+    if name == "bug":
+        print(target)
     if target > 0:
         weeknesses = allenemies_week[allenemies_desplayname.index(enemydesplayname[target-1])].split("_")
         for i in range(0,len(weeknesses)):
@@ -387,8 +421,14 @@ def Play_card(card,target):
             damagey *=-1
         enemyHP[target-1] -= damagey
     else:
+        weeknesses = "N/A"
+        if name == "bug":
+            print("423")
         HP -= damagey
+        if name == "bug":
+            print("425")
     if name == "bug":
+        print("429")
         print(weeknesses)
     print("you did ",damagey, "damage")
 
@@ -407,12 +447,27 @@ def Play_card(card,target):
     if name == "bug":
         print("check to see if the guy is dead")
     if target > 0:
-        if enemyHP[target-1] < 0:
+        if name == "bug":
+            print("450")
+        if enemyHP[target-1] <= 0:
+            if name == "bug":
+                print("453")
+                print(enemy)
             enemy.pop[target-1]
+            if name == "bug":
+                print("456")
             enemydesplayname.pop[target-1]
+            if name == "bug":
+                print("459")
             enemyHP.pop[target-1]
+            if name == "bug":
+                print("461")
             enemyHPBar.pop[target-1]
+            if name == "bug":
+                print("465")
             enemyHPBardesplay.pop[target-1]
+            if name == "bug":
+                print("468")
 
     if name == "bug":
         print("discard")
