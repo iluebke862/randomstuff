@@ -448,20 +448,12 @@ def Play_card(card,target):
         print("check to see if the guy is dead")
     if target > 0:
         if enemyHP[target-1] <= 0:
-            if len(enemy) == 1:
-                enemy = []
-                enemydesplayname = []
-                enemyHP = []
-                enemyHPBar = []
-                enemyHPBardesplay = []
-                enemyHPBardesplaycounter = []
-                enemyMaxHP = []
-            else:
-                enemy.pop[target-1]
-                enemydesplayname.pop[target-1]
-                enemyHP.pop[target-1]
-                enemyHPBar.pop[target-1]
-                enemyHPBardesplay.pop[target-1]
+
+            enemy.pop(target-1)
+            enemydesplayname.pop(target-1)
+            enemyHP.pop(target-1)
+            enemyHPBar.pop(target-1)
+            enemyHPBardesplay.pop(target-1)
 
     if name == "bug":
         print("discard")
