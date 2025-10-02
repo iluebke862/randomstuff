@@ -87,7 +87,7 @@ status_description = {"Conceal": "(Conceal: When you play a pysical attack card,
 #moves data
 cards_atk = (1,2,-1,-2,2,4)
 cards_def = (0,0,0,0,0,0)
-cards_type = (0,0,1_2,1_2,0,0)
+cards_type = (0,0,"1_2","1_2",0,0)
 cards_ap_cost = (0,0,0,0,0,2)
 cards_mp_cost = (0,0,0,0,0,1)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal")
@@ -115,7 +115,7 @@ map_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10,1,1,1,1,1,1)
 biome_desplay=("\u26C6","\u2667","\u2637","\u26F0","\u2610","\u26CB","\u26EA","\u26EB","\u2630","\u26EC")
-biome_mobs=("0","0,1","0,1","1","","","","","","")
+biome_mobs=("1","1","1","1","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -133,6 +133,11 @@ turn = 1
 
 
 
+def debug(msg):
+    if name == "bug":
+        print("DEBUG-0")
+        print(msg)
+        print("DEBUG-1")
 
 def Encoutner_setup():
     global enemyHPBar
@@ -269,7 +274,7 @@ def Refresh_hud():
             print(enemyMaxHP,"enemyMaxHP")
             print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             for i in range(0,len(enemy)):
-                print("2",enemydesplayname[i],"<",enemyHPBardesplay[i],">",enemyHP[i],enemyMaxHP[i])
+                print("2",enemydesplayname[i],"<",enemyHPBardesplay[i],">",enemyHP[i],enemyMaxHP[i],Hand)
             print("3")
             print("4")
             print("5")
@@ -360,9 +365,10 @@ def Refresh_hud():
                     if cards_ap_cost[Hand[examine-11]] > AP or cards_mp_cost[Hand[examine-11]] > MP:
                         print("Not enough Energy/Mana")
                         raise Exception()
-                    Play_card(Hand[examine-11],int(temp))
                 except:
                     pass
+                else:
+                    Play_card(Hand[examine-11],int(temp))
             elif examine == len(Hand)+11:
                 print("End turn")
                 temp = input(colors[2]+"Press enter to go back, input 1 to continue\n"+colors[9])
@@ -402,36 +408,41 @@ def Play_card(card,target):
 
     #base dam
     damagey = cards_atk[card]
-    
+    debug("q")
     
     #additional stat dam
-    if cards_type[card] == 0:
+    if type(cards_type[card]) == int:
+        card_type = []
+        card_type.append(cards_type[card])
+    else:
+        card_type = cards_type[card].split("_")
+        for i in range(0,len(card_type)):
+            card_type[i] = int(card_type[i])
+    debug(card_type)
+
+    if 0 in card_type:
         damagey *= ATK
-    if cards_type[card] == 1:
+    if 1 in card_type:
         damagey *= MATK
+    debug("w")
     
     
     
-    if name == "bug":
-        print(target)
     if target > 0:
         weeknesses = allenemies_week[allenemies_desplayname.index(enemydesplayname[target-1])].split("_")
         for i in range(0,len(weeknesses)):
             weeknesses[i] = int(weeknesses[i])
-        if cards_type[card] in weeknesses:
-            damagey *=2
+        for i in range(0,len(card_type)):
+            if card_type[i] in weeknesses:
+                damagey *=2
         if damagey < 0 and 2 in weeknesses:
             damagey *=-1
         enemyHP[target-1] -= damagey
     else:
         weeknesses = "N/A"
-        if name == "bug":
-            print("423")
+        debug("436")
         HP -= damagey
-        if name == "bug":
-            print("425")
-    if name == "bug":
-        print("429")
+        debug("438")
         print(weeknesses)
     print("you did ",damagey, "damage")
 
@@ -439,16 +450,14 @@ def Play_card(card,target):
 
 
     #prevent overheal
-    if name == "bug":
-        print("prevent overheal")
+    debug("prevent overheal")
     if target > 0:
         if enemyHP[target-1] > enemyMaxHP[target-1]:
             enemyHP[target-1] = enemyMaxHP[target-1]
     if HP > MaxHP:
         HP = MaxHP
     #check to see if the guy is dead
-    if name == "bug":
-        print("check to see if the guy is dead")
+    debug("check to see if the guy is dead")
     if target > 0:
         if enemyHP[target-1] <= 0:
 
@@ -457,9 +466,7 @@ def Play_card(card,target):
             enemyHP.pop(target-1)
             enemyHPBar.pop(target-1)
             enemyHPBardesplay.pop(target-1)
-
-    if name == "bug":
-        print("discard")
+    debug("discard")
     #put card in discard
     Discard.append(card)
     Hand.remove(card)
