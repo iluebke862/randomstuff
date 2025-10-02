@@ -1,12 +1,14 @@
 import random
 
 
-
+#colors
+colors = ("\x1b[30m","\x1b[31m","\x1b[32m","\x1b[33m","\x1b[34m","\x1b[35m","\x1b[36m","\x1b[37m","\x1b[38m","\x1b[39m")
+#black, red, green, yellow, blue, megenta, cyan, white, default
 
 
 print("")
 print("Welcome to Otocat714's Crappy adventure game that will be the opposite of a corn maze")
-name = input("Please imput your name, social security number, or mental state\n")
+name = input(colors[2]+"Please imput your name, social security number, or mental state\n"+colors[9])
 print("Hello, ",name)
 print("Because im lazy and don't want to think of proper game design right now, the gameplay will be as follows")
 print("You are going to be playing a equivilent of offbrand pokemon but you don't have any pokemon")
@@ -17,26 +19,25 @@ valid = ["1"]
 if name == "bug":
     valid.append("0")
 while indecisiveloop == 1:
-    input("Press enter to continue")
-    print("Pick your class")
+    input(colors[2]+"Press enter to continue"+colors[9])
     print("---------------------------")
     if name == "bug":
-        print("0 Bugtester")
+        print(colors[1]+"0 Bugtester"+colors[9])
     print("1 Rouge")
     print("2 Warrior (N/A)")
     print("3 Mage (N/A)")
     print("4 Priest (N/A)")
     print("---------------------------")
-    a = input()
+    a = input(colors[2]+"Pick your class"+colors[9])
     if a in valid:
         if a == "0":
             print("---------------------------")
-            print("for bugtesting, invalidates speedruns if that ever becomes a thing")
+            print(colors[1]+"for bugtesting, invalidates speedruns if that ever becomes a thing")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,Hand:2")
+            print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,Hand:2"+colors[9])
             print("---------------------------")
-            a = input("Confirm?")
-            if a == "Yes" or a == "yes":
+            a = input(colors[2]+"Confirm?"+colors[9])
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
                 indecisiveloop = 0
                 MaxHP = 100
                 HP = 100
@@ -55,8 +56,8 @@ while indecisiveloop == 1:
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
             print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,Hand:3")
             print("---------------------------")
-            a = input("Confirm?")
-            if a == "Yes" or a == "yes":
+            a = input(colors[2]+"Confirm?"+colors[9])
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
                 indecisiveloop = 0
                 MaxHP = 5
                 HP = 5
@@ -80,6 +81,8 @@ Discard = []
 
 
 #Data
+
+#statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)" }
 #moves data
 cards_atk = (1,2,-1,-2,2,4)
@@ -312,10 +315,10 @@ def Refresh_hud():
             idiotloop = 0
             while idiotloop == 0:
                 try:
-                    examine = int(input("Insert # to examine\n"))
+                    examine = int(input(colors[2]+"Insert # to examine\n"+colors[9]))
                     idiotloop = 1
                 except:
-                    print("Invalid input, valid inputs include",valid_awnsers)
+                    print(colors[1]+"Invalid input, valid inputs include",str(valid_awnsers)+colors[9])
 
 
 
@@ -327,7 +330,7 @@ def Refresh_hud():
                 if examine in valid_awnsers:
                     idiotloop = 1
                 else:
-                    print("Invalid input, valid inputs include",valid_awnsers)
+                    print(colors[1]+"Invalid input, valid inputs include",str(valid_awnsers)+colors[9])
                     try:
                         examine = int(input())
                     except:
@@ -348,11 +351,11 @@ def Refresh_hud():
             if examine > 10 and examine < len(Hand)+11:
                 print("Action : "+cards_names[Hand[examine-11]])
                 print("Description : "+cards_description[Hand[examine-11]])
-                temp = input("Press enter to go back, input positive # to target opponents, negitave # to target allies\n")
+                temp = input(colors[2]+"Press enter to go back, input positive # to target opponents, negitave # to target allies\n"+colors[9])
                 try:
                     int(temp)
                     if int(temp) > len(enemy) or int(temp) == 0:
-                        print("Invalid target")
+                        print(colors[1]+"Invalid target"+colors[9])
                         raise Exception()
                     if cards_ap_cost[Hand[examine-11]] > AP or cards_mp_cost[Hand[examine-11]] > MP:
                         print("Not enough Energy/Mana")
@@ -362,7 +365,7 @@ def Refresh_hud():
                     pass
             elif examine == len(Hand)+11:
                 print("End turn")
-                temp = input("Press enter to go back, input 1 to continue\n")
+                temp = input(colors[2]+"Press enter to go back, input 1 to continue\n"+colors[9])
                 if temp == "1":
                     turn = 0
                     while len(Hand) > 0:
@@ -382,7 +385,7 @@ def Refresh_hud():
         
         print()
         print("--------------------------------------------")
-        input("press enter to continue\n")
+        input(colors[2]+"press enter to continue\n"+colors[9])
 
 def Play_card(card,target):
     global enemy, enemydesplayname, enemyHPBar, enemyHPBardesplaycounter, enemyHPBardesplay, enemyHPBarrefresh
@@ -653,6 +656,7 @@ def Refresh_Map(map,sub,first):
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     valid_awnsers = ["W","A","S","D","w","a","s","d"]
     idiotloop = 0
+    print(colors[2]+"Enter WASD to move"+colors[9])
     while idiotloop == 0:
         try:
             examine = input()
@@ -661,7 +665,7 @@ def Refresh_Map(map,sub,first):
             else:
                 raise
         except:
-            print("Invalid input, valid inputs include",valid_awnsers)
+            print(colors[1]+"Invalid input, valid inputs include",str(valid_awnsers)+colors[9])
         else:
             idiotloop = 1
     
