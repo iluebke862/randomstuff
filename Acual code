@@ -76,7 +76,8 @@ while indecisiveloop == 1:
 #Base Player setup
 
 Discard = []
-
+Effects = []
+Effectsstack = []
 
 
 
@@ -85,11 +86,11 @@ Discard = []
 #statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)" }
 #moves data
-cards_atk = (1,2,-1,-2,2,4)
-cards_def = (0,0,0,0,0,0)
-cards_type = (0,0,"1_2","1_2",0,0)
-cards_ap_cost = (0,0,0,0,0,2)
-cards_mp_cost = (0,0,0,0,0,1)
+cards_atk = (1,2,-1,-2,2,4,0)
+cards_def = (0,0,0,0,0,0,0)
+cards_type = (0,0,"1_2","1_2",0,0,"0_3")
+cards_ap_cost = (0,0,0,0,0,2,2)
+cards_mp_cost = (0,0,0,0,0,0,1)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal\nAP:2\nMP:1\n"+status_description["Conceal"])
 #typings
@@ -105,6 +106,8 @@ enemyMaxHP = []
 enemyHP = []
 enemyHPBar = []
 enemyHPBardesplay = []
+enemyeffects = []
+enemyeffectsstack = []
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
@@ -114,7 +117,7 @@ map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10,1,1,1,1,1,1)
-biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],"\u2637","\u26F0","\u2610","\u26CB","\u26EA","\u26EB","\u2630","\u26EC")
+biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610",colors[6]+"\u26CB"+colors[9],"\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9])
 biome_mobs=("1","1","1","1","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
@@ -379,11 +382,33 @@ def Refresh_hud():
                         Hand.pop(0)
         else:
             for i in range(0,len(enemy)):
-                HP -= (allenemies_atk[enemy[i]]/DF)
-                print("You took",(allenemies_atk[enemy[i]]/DF),"damage")
-                turn = 1
-                Handdelt = 0
+                
+                damagey = allenemies_atk[enemy[i]]/DF
+
+
+
+                if "Conceal" in Effects and damagey != 0:
+                    if Effectsstack[Effects.index("Conceal")] >0:
+                        damagey = 0
+                
+                
+                HP -= damagey
+                print("You took",damagey,"damage")
+
             
+            #removes effects
+            effectsremove = []
+            for i in range(0,len(Effects)):
+                if Effectsstack[i] >= 0:
+                    effectsremove.append(i)
+            effectsremove.reverse()
+            for i in range(0,len(effectsremove)):
+                Effects.pop[effectsremove[i]]
+                Effectsstack.pop[effectsremove[i]]
+            
+            
+            turn = 1
+            Handdelt = 0
             
                     
 
@@ -405,7 +430,23 @@ def Play_card(card,target):
     global cards_type
     global cards_atk
     global cards_def
+    global Effects
+    global enemyeffects
 
+    #special card effects
+    if card == 6:
+        if "Conceal" in Effects:
+            Effectsstack[Effects.index("Conceal")] += 1
+        else:
+            Effects.append("Conceal")
+            Effectsstack.append(1)
+    
+    
+    
+    
+    
+    
+    
     #base dam
     damagey = cards_atk[card]
     debug("q")
@@ -429,14 +470,28 @@ def Play_card(card,target):
     
     
     if target > 0:
+        
+        
+        #weeknesses
         weeknesses = allenemies_week[allenemies_desplayname.index(enemydesplayname[target-1])].split("_")
         for i in range(0,len(weeknesses)):
             weeknesses[i] = int(weeknesses[i])
         for i in range(0,len(card_type)):
             if card_type[i] in weeknesses:
                 damagey *=2
+        
+        
+        #holy heal damage
         if damagey < 0 and 2 in weeknesses:
             damagey *=-1
+        
+        #conceal
+        if "Conceal" in Effects:
+            if damagey > 0:
+                damagey *= 2
+                Effectsstack[Effects.index("Conceal")] -= 1
+
+        #impact damage
         enemyHP[target-1] -= damagey
     else:
         weeknesses = "N/A"
@@ -466,6 +521,18 @@ def Play_card(card,target):
             enemyHP.pop(target-1)
             enemyHPBar.pop(target-1)
             enemyHPBardesplay.pop(target-1)
+    #remove effects
+    effectsremove = []
+    for i in range(0,len(Effects)):
+        if Effectsstack[i] >= 0:
+            effectsremove.append(i)
+    effectsremove.reverse()
+    for i in range(0,len(effectsremove)):
+        Effects.pop(effectsremove[i])
+        Effectsstack.pop(effectsremove[i])
+
+    
+    
     debug("discard")
     #put card in discard
     Discard.append(card)
