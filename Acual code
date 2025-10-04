@@ -65,7 +65,7 @@ while indecisiveloop == 1:
         if a == "1":
             print("---------------------------")
             print("Classic rouge")
-            print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
+            print("Cards: Stab(4),Backstab(2),Conceal,Dark Bolt")
             print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,Hand:3")
             print("---------------------------")
             a = input(colors[2]+"Confirm?"+colors[9])
@@ -80,7 +80,7 @@ while indecisiveloop == 1:
                 MAP = 10
                 MP = 0
                 MMP = 7
-                Deck = [4,4,4,4,5,5,6,6]
+                Deck = [4,4,4,4,5,5,6,7]
                 Hand_limit = 3
 
 
@@ -98,13 +98,13 @@ Effectsstack = []
 #statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)" }
 #moves data
-cards_atk = (1,2,-1,-2,2,4,0)
-cards_def = (0,0,0,0,0,0,0)
-cards_type = (0,0,"1_2","1_2",0,0,"0_3")
-cards_ap_cost = (0,0,0,0,0,2,2)
-cards_mp_cost = (0,0,0,0,0,0,1)
-cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal")
-cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal\nAP:2\nMP:1\n"+status_description["Conceal"])
+cards_atk = (1,2,-1,-2,2,4,0,4)
+cards_def = (0,0,0,0,0,0,0,0)
+cards_type = (0,0,"1_2","1_2",0,0,"0_1_3","1_3")
+cards_ap_cost = (0,0,0,0,0,2,5,0)
+cards_mp_cost = (0,0,0,0,0,0,5,5)
+cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt")
+cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]")
 #typings
 #0 pysical
 #1 Magic
@@ -555,8 +555,8 @@ def Play_card(card,target):
         #conceal
         debug(Effects)
         if "Conceal" in Effects:
-            if damagey > 0:
-                damagey *= 2
+            if damagey > 0 and 0 in card_type:
+                damagey *= 1.5
                 Effectsstack[Effects.index("Conceal")] -= 1
         debug(Effectsstack)
         #impact damage
