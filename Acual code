@@ -14,6 +14,8 @@ while idiotloop == 1:
     a = input()
     if a != "":
         idiotloop = 0
+    else:
+        print(colors[2]+"Please imput your name, social security number, or mental state\n"+colors[9])
 name = colors[4]+a+colors[9]
 
 print("Hello, ",name)
