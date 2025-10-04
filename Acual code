@@ -8,7 +8,13 @@ colors = ("\x1b[30m","\x1b[31m","\x1b[32m","\x1b[33m","\x1b[34m","\x1b[35m","\x1
 
 print("")
 print("Welcome to Otocat714's Crappy adventure game that will be the opposite of a corn maze")
-name = colors[4]+input(colors[2]+"Please imput your name, social security number, or mental state\n"+colors[9])+colors[9]
+print(colors[2]+"Please imput your name, social security number, or mental state\n"+colors[9])
+idiotloop = 1
+while idiotloop == 1:
+    a = input()
+    if a != "":
+        idiotloop = 0
+name = colors[4]+a+colors[9]
 
 print("Hello, ",name)
 print("Because im lazy and don't want to think of proper game design right now, the gameplay will be as follows")
@@ -235,7 +241,7 @@ def Refresh_hud():
                 enemyHPBardesplay[i] += colors[2]+"X"+colors[9]
                 enemyHPBardesplaycounter += 1
             while enemyHPBardesplaycounter < enemyHPBar[i]:
-                enemyHPBardesplay[i] += "O"
+                enemyHPBardesplay[i] += colors[1]+"O"+colors[9]
                 enemyHPBardesplaycounter += 1
         
         HPBardesplay = ""
@@ -246,7 +252,7 @@ def Refresh_hud():
             HPBardesplay += colors[2]+"X"+colors[9]
             HPBardesplaycounter += 1
         while HPBardesplaycounter < HPBar:
-            HPBardesplay += "O"
+            HPBardesplay += colors[1]+"O"+colors[9]
             HPBardesplaycounter += 1
 
         #Hand dealing
@@ -281,7 +287,7 @@ def Refresh_hud():
             print(enemyMaxHP,"enemyMaxHP")
             print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             for i in range(0,len(enemy)):
-                print("2",enemydesplayname[i],"<",enemyHPBardesplay[i],">",enemyHP[i],enemyMaxHP[i],Hand)
+                print("2",enemydesplayname[i],"<",enemyHPBardesplay[i],">",enemyHP[i],enemyMaxHP[i])
             print("3")
             print("4")
             print("5")
@@ -289,7 +295,7 @@ def Refresh_hud():
             print("7")
             print("8")
             print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print('10 "'+name+'" <',HPBardesplay,">",HP,MaxHP)
+            print('10 "'+name+'" <',HPBardesplay,">",HP,MaxHP,"AP:"+AP,"MP:"+MP,Hand)
         else:
             print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             for i in range(0,len(enemy)):
@@ -301,7 +307,7 @@ def Refresh_hud():
             print("7")
             print("8")
             print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print('10 "'+name+'" <',HPBardesplay,">")
+            print('10 "'+name+'" <',HPBardesplay,">","AP:"+AP,"MP:"+MP)
         #11- (Hand)
         while count < len(Hand):
             print(count+11,cards_names[Hand[count]])
@@ -358,6 +364,7 @@ def Refresh_hud():
                 print("Its you!")
                 print("HP:",HP)
                 print("Max HP:",MaxHP)
+                print("Effects:",Effects, Effectsstack)
                 if HP/MaxHP < 0.1:
                     print("might not be soon though")
             if examine > 10 and examine < len(Hand)+11:
@@ -407,8 +414,8 @@ def Refresh_hud():
                     effectsremove.append(i)
             effectsremove.reverse()
             for i in range(0,len(effectsremove)):
-                Effects.pop[effectsremove[i]]
-                Effectsstack.pop[effectsremove[i]]
+                Effects.pop(effectsremove[i])
+                Effectsstack.pop(effectsremove[i])
             
             
             turn = 1
@@ -435,6 +442,7 @@ def Play_card(card,target):
     global cards_atk
     global cards_def
     global Effects
+    global Effectsstack
     global enemyeffects
 
     #special card effects
@@ -444,7 +452,9 @@ def Play_card(card,target):
         else:
             Effects.append("Conceal")
             Effectsstack.append(1)
-    
+    debug("card:"+str(card))
+    debug(Effects)
+    debug(Effectsstack)
     
     
     
@@ -490,11 +500,12 @@ def Play_card(card,target):
             damagey *=-1
         
         #conceal
+        debug(Effects)
         if "Conceal" in Effects:
             if damagey > 0:
                 damagey *= 2
                 Effectsstack[Effects.index("Conceal")] -= 1
-
+        debug(Effectsstack)
         #impact damage
         enemyHP[target-1] -= damagey
     else:
@@ -528,7 +539,7 @@ def Play_card(card,target):
     #remove effects
     effectsremove = []
     for i in range(0,len(Effects)):
-        if Effectsstack[i] >= 0:
+        if Effectsstack[i] <= 0:
             effectsremove.append(i)
     effectsremove.reverse()
     for i in range(0,len(effectsremove)):
