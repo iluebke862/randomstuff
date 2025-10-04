@@ -130,7 +130,7 @@ map_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10,1,1,1,1,1,1)
 biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610",colors[6]+"\u26CB"+colors[9],"\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9])
-biome_mobs=("1","1","1","1","","","","","","")
+biome_mobs=("","0_1","0_1","0_1","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -776,6 +776,8 @@ def Refresh_Map(map,sub,first):
                 desplay_element = "\u26EB"
             elif this_location_locations[i] == "Exit":
                 desplay_element = "\u26CB"
+            elif this_location_locations[i] == "Shop":
+                desplay_element = "\u26C0"
             else:
                 desplay_element = "ERROR"
             templist = ("Town","Cave")
@@ -1356,6 +1358,10 @@ def Generate_Map(map_location):
             locations_location.append("S,"+str(len(locations)-3))
             locations_map_location.append("15,28")
             locations_submaps_spawn.append("N/A")
+            locations.append("Shop")
+            locations_location.append("S,"+str(len(locations)-4))
+            locations_map_location.append("5,18")
+            locations_submaps_spawn.append("N/A")
 
     else:
 
@@ -1403,6 +1409,10 @@ def Exit():
     locations_location[player_location] = temp2
     locations_map_location[player_location] = temp
     out = True
+
+
+def Dialouge():
+    pass
 
     
     
