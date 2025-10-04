@@ -171,6 +171,8 @@ def Encoutner_setup():
     global MAP
     global MP
     global MMP
+    global APBar
+    global MPBar
     Handdelt = 0
     MP = MMP
     AP = MAP
@@ -193,6 +195,8 @@ def Encoutner_setup():
             while enemyHPBar[i] <= ((enemyMaxHP[i]-10)/(enemyHPBar[i]*0.1)):
                 enemyHPBar[i] += 1
             enemyHPBar[i] -= 1
+    
+    
     if MaxHP <= 10:
         HPBar = 10
     else:
@@ -200,8 +204,20 @@ def Encoutner_setup():
         while HPBar <= ((MaxHP-10)/(HPBar*0.1)):
             HPBar += 1
         HPBar -= 1
-
-    
+    if MAP <= 10:
+        APBar = 10
+    else:
+        APBar = 10
+        while APBar <= ((MAP-10)/(APBar*0.1)):
+            APBar += 1
+        APBar -= 1
+    if MMP <= 10:
+        MPBar = 10
+    else:
+        MPBar = 10
+        while MPBar <= ((MMP-10)/(MPBar*0.1)):
+            MPBar += 1
+        MPBar -= 1
     
 
 
@@ -229,6 +245,8 @@ def Refresh_hud():
     global MAP
     global MP
     global MMP
+    global MPBar
+    global APBar
     if enemy == "":
         pass
     else:
@@ -256,6 +274,32 @@ def Refresh_hud():
         while HPBardesplaycounter < HPBar:
             HPBardesplay += colors[1]+"O"+colors[9]
             HPBardesplaycounter += 1
+
+
+        APBardesplay = ""
+        APBardesplaycounter = 0
+        APBarrefresh = APBar
+        APBarrefresh *= AP/MAP
+        while APBardesplaycounter < APBarrefresh:
+            APBardesplay += colors[3]+"X"+colors[9]
+            APBardesplaycounter += 1
+        while APBardesplaycounter < APBar:
+            APBardesplay += colors[1]+"O"+colors[9]
+            APBardesplaycounter += 1
+        
+        
+        MPBardesplay = ""
+        MPBardesplaycounter = 0
+        MPBarrefresh = MPBar
+        MPBarrefresh *= MP/MMP
+        while MPBardesplaycounter < MPBarrefresh:
+            MPBardesplay += colors[6]+"X"+colors[9]
+            MPBardesplaycounter += 1
+        while MPBardesplaycounter < MPBar:
+            MPBardesplay += colors[1]+"O"+colors[9]
+            MPBardesplaycounter += 1
+
+
 
         #Hand dealing
         if Handdelt == 0:
@@ -309,7 +353,7 @@ def Refresh_hud():
             print("7")
             print("8")
             print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print('10 "'+name+'" <',HPBardesplay,">","AP:"+AP,"MP:"+MP)
+            print('10 "'+name+'" <',HPBardesplay,">","[",APBardesplay,"]","{",MPBardesplay,"}")
         #11- (Hand)
         while count < len(Hand):
             print(count+11,cards_names[Hand[count]])
@@ -446,6 +490,10 @@ def Play_card(card,target):
     global Effects
     global Effectsstack
     global enemyeffects
+    global AP
+    global MP
+    global cards_mp_cost
+    global cards_ap_cost
 
     #special card effects
     if card == 6:
@@ -459,7 +507,10 @@ def Play_card(card,target):
     debug(Effectsstack)
     
     
-    
+    #ap/mp cost
+    debug("ap/mp cost")
+    AP -= cards_ap_cost[card]
+    MP -= cards_mp_cost[card]
     
     
     
