@@ -341,7 +341,7 @@ def Refresh_hud():
             print("7")
             print("8")
             print("9>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print('10 "'+name+'" <',HPBardesplay,">",HP,MaxHP,"AP:"+AP,"MP:"+MP,Hand)
+            print('10 "'+name+'" <',HPBardesplay,">","[",APBardesplay,"]","{",MPBardesplay,"}")
         else:
             print("1>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             for i in range(0,len(enemy)):
