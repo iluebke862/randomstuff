@@ -1451,8 +1451,7 @@ def Dialouge():
 
 def Shop(shop_stuff):
     global cards_descrition, cards_names, currency, Deck, out
-    for i in range(0,20):
-        print()
+
     shop_items = []
     shop_prices = []
     shop_items_type = []
@@ -1498,6 +1497,8 @@ def Shop(shop_stuff):
     exit = False
     #desplay
     while exit == False:
+        for i in range(0,20):
+            print()
         if pruchased == True:
             face = 2
         else:
