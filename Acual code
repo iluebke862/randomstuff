@@ -46,7 +46,7 @@ while indecisiveloop == 1:
             print("---------------------------")
             print(colors[1]+"for bugtesting, invalidates speedruns if that ever becomes a thing")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
-            print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,Hand:2"+colors[9])
+            print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,$:1000,Hand:2"+colors[9])
             print("---------------------------")
             a = input(colors[2]+"Confirm?"+colors[9])
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
@@ -60,13 +60,14 @@ while indecisiveloop == 1:
                 MAP = 100
                 MP = 0
                 MMP = 100
+                currency = 1000
                 Deck = [0,0,1,1,2,2,3,3]
                 Hand_limit = 8
         if a == "1":
             print("---------------------------")
             print("Classic rouge")
             print("Cards: Stab(4),Backstab(2),Conceal,Dark Bolt")
-            print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,Hand:3")
+            print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,$:10,Hand:3")
             print("---------------------------")
             a = input(colors[2]+"Confirm?"+colors[9])
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
@@ -80,6 +81,7 @@ while indecisiveloop == 1:
                 MAP = 10
                 MP = 0
                 MMP = 7
+                currency = 10
                 Deck = [4,4,4,4,5,5,6,7]
                 Hand_limit = 3
 
@@ -1414,58 +1416,202 @@ def Exit():
 def Dialouge():
     pass
 
+
+
+def Shop():
+    global cards_descrition, cards_names, currency, Deck
+
+
+    shop_items = [4,5,6,7]
+    shop_items_type = ["card","card","card","card"]
+    shop_prices = [10,10,10,10]
+    hover = 0
+    shop_items.append("exit")
+    shop_prices.append("exit")
+    shop_items_type.append("exit")
     
+    #asci art
+    door = ("   _________    ","   |       |    ","   |     O |    ","   |     ' |    ") 
+    pysical_card = (colors[1]+"   ________     "+colors[9],colors[1]+"   \   _I_ \    "+colors[9],colors[1]+"    \  | |  \   "+colors[9],colors[1]+"     \__v____\  "+colors[9])
+    magic_card = (colors[5]+"   ________     "+colors[9],colors[5]+"   \    ^  \    "+colors[9],colors[5]+"    \  {*}  \   "+colors[9],colors[5]+"     \__v____\  "+colors[9])
+    mystery_card = ("   ________     ","   \       \    ","    \   ?   \   ","     \_______\  ")
+
     
+    asci_items = (door,pysical_card,magic_card,mystery_card)
+
+
+
+
+    #shopkeep
+    normal_face = ("      _      ","    / ..\    ","  __\ - /__  "," /         \ ")
+    unhappy_face = ("      _      ","    / ..\    ","  __\ ^ /__  "," /         \ ")
+    happy_face = ("      _      ","    / ..\    ","  __\ v /__  "," /         \ ")
+    faces = (normal_face,unhappy_face,happy_face)
+
+
+
+    face = 0
+    asci_item = 0
+    pruchased = False
+    exit = False
+    #desplay
+    while exit == False:
+        if pruchased == True:
+            face = 2
+        else:
+            if (hover + 1) == len(shop_items) and pruchased == False:
+                face = 1
+            else:
+                face = 0
+        if (hover + 1) == len(shop_items):
+            asci_item = 0
+        else:
+            if shop_items_type[hover] == "card":
+                
+                if type(cards_type[shop_items[hover]]) == str:
+                    temp = cards_type[shop_items[hover]].split("_")
+                    for i in range(0,len(temp)):
+                        temp[i] = int(temp[i])
+                    if 0 in temp:
+                        asci_item = 1
+                    elif 1 in temp:
+                        asci_item = 2
+                    else:
+                        asci_item = 3
+                else:
+                    temp = cards_type[shop_items[hover]]
+                    if 0 == temp:
+                        asci_item = 1
+                    elif 1 == temp:
+                        asci_item = 2
+                    else:
+                        asci_item = 3
+
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print("|"+faces[face][0]+"|"+asci_items[asci_item][0]+"|")
+        print("|"+faces[face][1]+"|"+asci_items[asci_item][1]+"|")
+        print("|"+faces[face][2]+"|"+asci_items[asci_item][2]+"|")
+        print("|"+faces[face][3]+"|"+asci_items[asci_item][3]+"|")
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        if (hover + 1) != len(shop_items):
+            print(cards_description[shop_items[hover]])
+        else:
+            if pruchased == True: 
+                print("Come again!")
+            else:
+                print(":(")
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        for i in range(0,len(shop_items)):
+            if hover == i:
+                print("\u265F ",end="")
+            else:
+                print("\u26C0 ",end="")
+            if (i+1) != len(shop_items): 
+                print(cards_names[shop_items[i]],"("+str(shop_prices[i])+")")
+            else:
+                print("Leave")
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print(colors[2]+"Press enter to buy, or enter w or s to reselect"+colors[9])
+        a = 0
+        while a != "W" and a != "w" and a != "S" and a != "s" and a != "":
+            a = input()
+            if a != "W" and a != "w" and a != "S" and a != "s" and a != "":
+                print(colors[2]+"Press enter to buy, or enter w or s to reselect"+colors[9])
+        if a == "W" or a == "w":
+            if hover == 0:
+                hover = (len(shop_items) - 1)
+            else:
+                hover -= 1
+        if a == "S" or a == "s":
+            if (hover + 1) == len(shop_items):
+                hover = 0
+            else:
+                hover += 1
+        if a == "":
+            if (hover + 1) == len(shop_items):
+                exit = True
+            else:
+                if currency >= shop_prices[hover]:
+                    currency -= shop_prices[hover]
+                    
+                    
+                    if shop_items_type[hover] == "card":
+                        Deck.append(shop_items[hover])
+                    
+                    shop_items.pop(hover)
+                    shop_items_type.pop(hover)
+                    shop_prices.pop(hover)
+                    pruchased = True
+
+                else:
+                    print(colors[1]+"Not enough currency"+colors[9])
+                    input(colors[2]+"Press enter to continue"+colors[9])
+
+                
+
+                
+
     
 
 
 
 func_list = [Exit]
+
+
+
+
 Generate_Map("0,0")
 out = False
-while gamestate != -1:
-    while gamestate == 0:
-        if name == "\x1b[34mbug\x1b[39m":
-            print(locations)
-            print(locations_location)
-            print(locations_map_location)
-            print(locations_submaps_spawn)
-            print(gamestate)
-        temp = locations.index("Player")
-        temp2 = locations_map_location[temp]
-        try:
-            temp4 = locations_map_location.index(temp2,1)
-        except:
-            pass
-        if locations_map_location.count(temp2) > 1:
-            if out == True:
-                if locations_location[temp].startswith("S"):
-                    Refresh_Map(locations_location[temp],True,False)
-                else:
-                    Refresh_Map(locations_location[temp],False,False)
-                out = False
-            else:
-                if locations_submaps[temp4].startswith("N/A"):          
-                    pass
-                elif locations_submaps[temp4].startswith("F_"):
-                    func_list[int(locations_submaps[temp4].split("_")[1])]()
-                else:
-                    locations_location[locations.index("Player")] = "S,"+str(temp4)
-                    Refresh_Map("S,"+str(temp4),True,True)
-                    locations_map_location[temp] = locations_submaps_spawn[temp4]
-        else:
-            if locations_location[temp].startswith("S"):
-                Refresh_Map(locations_location[temp],True,False)
-            else:
-                Refresh_Map(locations_location[temp],False,False)
 
-    if gamestate == 1:
-        Encoutner_setup()
-    while gamestate == 1:
-        Refresh_hud()
-        if HP <= 0:
-            print("Game Over")
-            gamestate = -1
-        if len(enemy) == 0:
-            print("Enemy Defeated!")
-            gamestate = 0
+
+
+Shop()
+
+
+
+# while gamestate != -1:
+#     while gamestate == 0:
+#         if name == "\x1b[34mbug\x1b[39m":
+#             print(locations)
+#             print(locations_location)
+#             print(locations_map_location)
+#             print(locations_submaps_spawn)
+#             print(gamestate)
+#         temp = locations.index("Player")
+#         temp2 = locations_map_location[temp]
+#         try:
+#             temp4 = locations_map_location.index(temp2,1)
+#         except:
+#             pass
+#         if locations_map_location.count(temp2) > 1:
+#             if out == True:
+#                 if locations_location[temp].startswith("S"):
+#                     Refresh_Map(locations_location[temp],True,False)
+#                 else:
+#                     Refresh_Map(locations_location[temp],False,False)
+#                 out = False
+#             else:
+#                 if locations_submaps[temp4].startswith("N/A"):          
+#                     pass
+#                 elif locations_submaps[temp4].startswith("F_"):
+#                     func_list[int(locations_submaps[temp4].split("_")[1])]()
+#                 else:
+#                     locations_location[locations.index("Player")] = "S,"+str(temp4)
+#                     Refresh_Map("S,"+str(temp4),True,True)
+#                     locations_map_location[temp] = locations_submaps_spawn[temp4]
+#         else:
+#             if locations_location[temp].startswith("S"):
+#                 Refresh_Map(locations_location[temp],True,False)
+#             else:
+#                 Refresh_Map(locations_location[temp],False,False)
+
+#     if gamestate == 1:
+#         Encoutner_setup()
+#     while gamestate == 1:
+#         Refresh_hud()
+#         if HP <= 0:
+#             print("Game Over")
+#             gamestate = -1
+#         if len(enemy) == 0:
+#             print("Enemy Defeated!")
+#             gamestate = 0
