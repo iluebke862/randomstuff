@@ -1369,7 +1369,8 @@ def Generate_Map(map_location):
             locations_location.append("S,"+str(len(locations)-4))
             locations_map_location.append("5,18")
             temp2 = ""
-            for i in range(random.randint(2,5)):
+            atemp = random.randint(2,5)
+            for i in range(0,atemp):
                 if random.randint(1,100) == 100:
                     temp = 0
                 elif random.randint(1,50) == 80:
@@ -1387,9 +1388,13 @@ def Generate_Map(map_location):
                     tempp = 1+(tempp/100)
                 else:
                     tempp = 1
-                temp2 = str(temp2) + str(temp)+"_"+str(round(cards_def_price[temp]*tempp))+"_"+"0"+"_"
+                if i == 0:
+                    temp2 = str(temp)+"_"+str(round(cards_def_price[temp]*tempp))+"_"+"0"
+                else:
+                    temp2 = str(temp2)+"_" + str(temp)+"_"+str(round(cards_def_price[temp]*tempp))+"_"+"0"
+            
             locations_submaps_spawn.append(temp2)
-            locations_submaps.append("F_1_"+str(len(locations)))
+            locations_submaps.append("F_1_"+str(len(locations)-1))
 
     else:
 
@@ -1446,16 +1451,21 @@ def Dialouge():
 
 def Shop(shop_stuff):
     global cards_descrition, cards_names, currency, Deck, out
+    for i in range(0,20):
+        print()
     shop_items = []
     shop_prices = []
     shop_items_type = []
     temp = locations_submaps_spawn[int(shop_stuff)].split("_")
-    for i in range(0,(len(temp)/3)):
-        shop_items.append(int(temp[i*3-2]))
-        shop_prices.append(int(temp[i*3-1]))
-        if int(temp[i*3]) == 0:
+    for i in range(0,int(len(temp)/3)):
+        shop_items.append(int(temp[i*3-3]))
+        shop_prices.append(int(temp[i*3-2]))
+        if int(temp[i*3-1]) == 0:
             shop_items_type.append("card")
 
+    debug(shop_items)
+    debug(shop_prices)
+    debug(shop_items_type)
 
     hover = 0
     shop_items.append("exit")
@@ -1595,8 +1605,6 @@ func_list = [Exit,Shop]
 
 Generate_Map("0,0")
 out = False
-
-
 
 
 
