@@ -107,6 +107,7 @@ cards_ap_cost = (0,0,0,0,0,2,5,0)
 cards_mp_cost = (0,0,0,0,0,0,5,5)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]")
+cards_def_price = (10,10,10,10,2,5,10,5)
 #typings
 #0 pysical
 #1 Magic
@@ -1350,20 +1351,45 @@ def Generate_Map(map_location):
             locations_submaps_spawn.append("15,27")
             
             
-            locations_submaps.append("F_0")
             locations.append("Exit")
             locations_location.append("S,"+str(len(locations)-2))
             locations_map_location.append("16,28")
             locations_submaps_spawn.append("N/A")
-            locations_submaps.append("F_0")
+            locations_submaps.append("F_0_0")
+            
+            
             locations.append("Exit")
             locations_location.append("S,"+str(len(locations)-3))
             locations_map_location.append("15,28")
             locations_submaps_spawn.append("N/A")
+            locations_submaps.append("F_0_0")
+            
+            
             locations.append("Shop")
             locations_location.append("S,"+str(len(locations)-4))
             locations_map_location.append("5,18")
-            locations_submaps_spawn.append("N/A")
+            temp2 = ""
+            for i in range(random.randint(2,5)):
+                if random.randint(1,100) == 100:
+                    temp = 0
+                elif random.randint(1,50) == 80:
+                    temp = 1
+                elif random.randint(1,25) == 25:
+                    temp = 2
+                elif random.randint(1,10) == 10:
+                    temp = 3
+                else:
+                    temp = 4
+                tempp = random.randint(0,40)
+                if tempp <20:
+                    tempp = 1-(tempp/100)
+                elif tempp >20:
+                    tempp = 1+(tempp/100)
+                else:
+                    tempp = 1
+                temp2 = str(temp2) + str(temp)+"_"+str(round(cards_def_price[temp]*tempp))+"_"+"0"+"_"
+            locations_submaps_spawn.append(temp2)
+            locations_submaps.append("F_1_"+str(len(locations)))
 
     else:
 
@@ -1403,7 +1429,7 @@ def Generate_Map(map_location):
 # 4_9_9_9_9_9_9_9_9_9_9_9_4_4_4_9_9_4_4_4_9_9_9_9_9_9_9_9_9_4_/
 # 4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_4_/
         
-def Exit():
+def Exit(nope):
     global locations, locations_location, locations_map_location, out
     player_location = locations.index("Player")
     temp = str(locations_map_location[int(locations_location[player_location].split(",")[1])])
@@ -1418,9 +1444,17 @@ def Dialouge():
 
 
 
-def Shop(shop_items,shop_items_type,shop_prices):
+def Shop(shop_stuff):
     global cards_descrition, cards_names, currency, Deck, out
-
+    shop_items = []
+    shop_prices = []
+    shop_items_type = []
+    temp = locations_submaps_spawn[int(shop_stuff)].split("_")
+    for i in range(0,(len(temp)/3)):
+        shop_items.append(int(temp[i*3-2]))
+        shop_prices.append(int(temp[i*3-1]))
+        if int(temp[i*3]) == 0:
+            shop_items_type.append("card")
 
 
     hover = 0
@@ -1554,7 +1588,7 @@ def Shop(shop_items,shop_items_type,shop_prices):
 
 
 
-func_list = [Exit]
+func_list = [Exit,Shop]
 
 
 
@@ -1575,8 +1609,10 @@ while gamestate != -1:
             print(locations_map_location)
             print(locations_submaps_spawn)
             print(gamestate)
+            print(locations_submaps_spawn)
         temp = locations.index("Player")
         temp2 = locations_map_location[temp]
+        debug(temp2)
         try:
             temp4 = locations_map_location.index(temp2,1)
         except:
@@ -1592,7 +1628,7 @@ while gamestate != -1:
                 if locations_submaps[temp4].startswith("N/A"):          
                     pass
                 elif locations_submaps[temp4].startswith("F_"):
-                    func_list[int(locations_submaps[temp4].split("_")[1])]()
+                    func_list[int(locations_submaps[temp4].split("_")[1])](locations_submaps[temp4].split("_")[2])
                 else:
                     locations_location[locations.index("Player")] = "S,"+str(temp4)
                     Refresh_Map("S,"+str(temp4),True,True)
