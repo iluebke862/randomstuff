@@ -130,9 +130,9 @@ allenemies_week = ("1","1_2")
 map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(10,10,10,10,1,1,1,1,1,1)
-biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610",colors[6]+"\u26CB"+colors[9],"\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9])
-biome_mobs=("","0_1","0_1","0_1","","","","","","")
+biome_mob_chance=(10,10,10,10,1,1,1,1,1,1,1)
+biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610","\u26CB","\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9],"\u26C0")
+biome_mobs=("","0_1","0_1","0_1","","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -1418,13 +1418,11 @@ def Dialouge():
 
 
 
-def Shop():
-    global cards_descrition, cards_names, currency, Deck
+def Shop(shop_items,shop_items_type,shop_prices):
+    global cards_descrition, cards_names, currency, Deck, out
 
 
-    shop_items = [4,5,6,7]
-    shop_items_type = ["card","card","card","card"]
-    shop_prices = [10,10,10,10]
+
     hover = 0
     shop_items.append("exit")
     shop_prices.append("exit")
@@ -1530,6 +1528,7 @@ def Shop():
         if a == "":
             if (hover + 1) == len(shop_items):
                 exit = True
+                out = True
             else:
                 if currency >= shop_prices[hover]:
                     currency -= shop_prices[hover]
@@ -1565,53 +1564,52 @@ out = False
 
 
 
-Shop()
 
 
 
-# while gamestate != -1:
-#     while gamestate == 0:
-#         if name == "\x1b[34mbug\x1b[39m":
-#             print(locations)
-#             print(locations_location)
-#             print(locations_map_location)
-#             print(locations_submaps_spawn)
-#             print(gamestate)
-#         temp = locations.index("Player")
-#         temp2 = locations_map_location[temp]
-#         try:
-#             temp4 = locations_map_location.index(temp2,1)
-#         except:
-#             pass
-#         if locations_map_location.count(temp2) > 1:
-#             if out == True:
-#                 if locations_location[temp].startswith("S"):
-#                     Refresh_Map(locations_location[temp],True,False)
-#                 else:
-#                     Refresh_Map(locations_location[temp],False,False)
-#                 out = False
-#             else:
-#                 if locations_submaps[temp4].startswith("N/A"):          
-#                     pass
-#                 elif locations_submaps[temp4].startswith("F_"):
-#                     func_list[int(locations_submaps[temp4].split("_")[1])]()
-#                 else:
-#                     locations_location[locations.index("Player")] = "S,"+str(temp4)
-#                     Refresh_Map("S,"+str(temp4),True,True)
-#                     locations_map_location[temp] = locations_submaps_spawn[temp4]
-#         else:
-#             if locations_location[temp].startswith("S"):
-#                 Refresh_Map(locations_location[temp],True,False)
-#             else:
-#                 Refresh_Map(locations_location[temp],False,False)
+while gamestate != -1:
+    while gamestate == 0:
+        if name == "\x1b[34mbug\x1b[39m":
+            print(locations)
+            print(locations_location)
+            print(locations_map_location)
+            print(locations_submaps_spawn)
+            print(gamestate)
+        temp = locations.index("Player")
+        temp2 = locations_map_location[temp]
+        try:
+            temp4 = locations_map_location.index(temp2,1)
+        except:
+            pass
+        if locations_map_location.count(temp2) > 1:
+            if out == True:
+                if locations_location[temp].startswith("S"):
+                    Refresh_Map(locations_location[temp],True,False)
+                else:
+                    Refresh_Map(locations_location[temp],False,False)
+                out = False
+            else:
+                if locations_submaps[temp4].startswith("N/A"):          
+                    pass
+                elif locations_submaps[temp4].startswith("F_"):
+                    func_list[int(locations_submaps[temp4].split("_")[1])]()
+                else:
+                    locations_location[locations.index("Player")] = "S,"+str(temp4)
+                    Refresh_Map("S,"+str(temp4),True,True)
+                    locations_map_location[temp] = locations_submaps_spawn[temp4]
+        else:
+            if locations_location[temp].startswith("S"):
+                Refresh_Map(locations_location[temp],True,False)
+            else:
+                Refresh_Map(locations_location[temp],False,False)
 
-#     if gamestate == 1:
-#         Encoutner_setup()
-#     while gamestate == 1:
-#         Refresh_hud()
-#         if HP <= 0:
-#             print("Game Over")
-#             gamestate = -1
-#         if len(enemy) == 0:
-#             print("Enemy Defeated!")
-#             gamestate = 0
+    if gamestate == 1:
+        Encoutner_setup()
+    while gamestate == 1:
+        Refresh_hud()
+        if HP <= 0:
+            print("Game Over")
+            gamestate = -1
+        if len(enemy) == 0:
+            print("Enemy Defeated!")
+            gamestate = 0
