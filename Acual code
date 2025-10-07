@@ -48,8 +48,8 @@ while indecisiveloop == 1:
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
             print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,$:1000,Hand:2"+colors[9])
             print("---------------------------")
-            a = input(colors[2]+"Confirm?"+colors[9])
-            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
+            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 100
                 HP = 100
@@ -69,8 +69,8 @@ while indecisiveloop == 1:
             print("Cards: Stab(4),Backstab(2),Conceal,Dark Bolt")
             print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,$:10,Hand:3")
             print("---------------------------")
-            a = input(colors[2]+"Confirm?"+colors[9])
-            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
+            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 5
                 HP = 5
@@ -90,8 +90,8 @@ while indecisiveloop == 1:
             print("Cards: Strike(2), Harden")
             print("Stats: HP:12,ATK:1.1,MATK:1.1,DF:1,AP:15,MP:10,$:5,Hand:2")
             print("---------------------------")
-            a = input(colors[2]+"Confirm?"+colors[9])
-            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm":
+            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 12
                 HP = 12
@@ -439,7 +439,7 @@ def Refresh_hud():
             if examine > 10 and examine < len(Hand)+11:
                 print("Action : "+cards_names[Hand[examine-11]])
                 print("Description : "+cards_description[Hand[examine-11]])
-                temp = input(colors[2]+"Press enter to go back, input positive # to target opponents, negitave # to target allies\n"+colors[9])
+                temp = input(colors[2]+"Press enter to go back, input positive # to target opponents, negitave # to target allies\nex. (1 to target first opponent, -1 to target first ally)"+colors[9])
                 try:
                     int(temp)
                     if int(temp) > len(enemy) or int(temp) == 0:
