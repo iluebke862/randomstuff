@@ -48,7 +48,7 @@ while indecisiveloop == 1:
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
             print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,$:1000,Hand:2"+colors[9])
             print("---------------------------")
-            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 100
@@ -69,7 +69,7 @@ while indecisiveloop == 1:
             print("Cards: Stab(4),Backstab(2),Conceal,Dark Bolt")
             print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,$:10,Hand:3")
             print("---------------------------")
-            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 5
@@ -90,7 +90,7 @@ while indecisiveloop == 1:
             print("Cards: Strike(2), Harden")
             print("Stats: HP:12,ATK:1.1,MATK:1.1,DF:1,AP:15,MP:10,$:5,Hand:2")
             print("---------------------------")
-            a = strip(input(colors[2]+"Confirm? (type in yes)"+colors[9]))
+            a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
                 MaxHP = 12
