@@ -27,7 +27,7 @@ print("what I just said is totaly wrong and this is accualy a deck building game
 
 
 indecisiveloop = 1
-valid = ["1"]
+valid = ["1","2"]
 if name == "\x1b[34mbug\x1b[39m":
     valid.append("0")
 while indecisiveloop == 1:
@@ -97,7 +97,7 @@ while indecisiveloop == 1:
                 HP = 12
                 ATK = 1.1
                 MATK = 1.1
-                DF = 1
+                DF = 1.1
                 AP = 0
                 MAP = 15
                 MP = 0
@@ -108,7 +108,7 @@ while indecisiveloop == 1:
 
 
 #Base Player setup
-
+shield = 0
 Discard = []
 Effects = []
 Effectsstack = []
@@ -126,7 +126,7 @@ cards_type = (0,0,"1_2","1_2",0,0,"0_1_3","1_3",0,0)
 cards_ap_cost = (0,0,0,0,0,2,5,0,0,2)
 cards_mp_cost = (0,0,0,0,0,0,5,5,0,0)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden")
-cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense\nAP:2\nDefend:2\n[Pysical]")
+cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense. Only targets allys\nAP:2\nShield:2\n[Pysical]")
 cards_def_price = (10,10,10,10,2,5,10,5,2,5)
 #typings
 #0 pysical
@@ -270,6 +270,8 @@ def Refresh_hud():
     global MMP
     global MPBar
     global APBar
+    global DF
+    global shield
     if enemy == "":
         pass
     else:
@@ -464,7 +466,10 @@ def Refresh_hud():
             for i in range(0,len(enemy)):
                 
                 damagey = allenemies_atk[enemy[i]]/DF
-
+                damagey -= shield
+                if damagey <0:
+                    shield = damagey *-1
+                    damagey = 0
 
 
                 if "Conceal" in Effects and damagey != 0:
@@ -517,6 +522,7 @@ def Play_card(card,target):
     global MP
     global cards_mp_cost
     global cards_ap_cost
+    global shield
 
     #special card effects
     if card == 6:
@@ -557,6 +563,9 @@ def Play_card(card,target):
         damagey *= MATK
     debug("w")
     
+
+    #shield
+    shield += cards_def[card]
     
     
     if target > 0:
