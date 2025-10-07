@@ -1419,7 +1419,7 @@ def Generate_Map(map_location):
             locations_submaps.append("F_1_"+str(len(locations)-1))
 
             locations.append("Church")
-            locations_location.append("S,"+str(len(locations)-3))
+            locations_location.append("S,"+str(len(locations)-5))
             locations_map_location.append("23,24")
             locations_submaps_spawn.append("N/A")
             locations_submaps.append("F_2_0")
@@ -1473,15 +1473,17 @@ def Exit(nope):
 
 
 def Dialouge(person):
+    global out, HP, MaxHP
+    person = int(person)
     npc = 0
     if person == 0:
         desplay = ["Welcome to the church of the bool, how can i help you?","Not yet avalable","May the bool judge you true."]
         actions = ["Save (N/A)_Heal","Exit","Exit"]
-        link = ["1_2","F_0","F_0"]
+        link = ["1_2","F,0","F,1"]
     else:
         desplay = ["There has been a error in the dialouge code"]
         actions = ["exit"]
-        link = ["F_0"]
+        link = ["F,0"]
 
 
 
@@ -1490,22 +1492,34 @@ def Dialouge(person):
     con = True
     while con == True:
         print(colors[3]+desplay[npc]+colors[9])
-        print(colors[2]+actions[npc].split("_")+"{ Enter number }"+colors[9])
-        valid = [1]
-        for i in range(0,(len(link[npc].split)-1)):
-            valid.append(i+2)
+        print(colors[2],actions[npc].split("_"),"{ Enter number }"+colors[9])
+        valid = []
+        for i in range(0,len(actions[npc].split("_"))):
+            valid.append(i+1)
+
         idl = True
         while idl == True:
-            a = input()
-            if a in valid:
-                idl = False
-            else:
-                print(colors[2]+actions[npc].split("_")+"{ Enter number }"+colors[9])
-        temp = link[a-1].split("_")
-        if temp[0] == "F":
-            temp2 = int(temp[1])
+            try:
+                a = int(input())
+                if a in valid:
+                    idl = False
+                else:
+                    print(colors[2],actions[npc].split("_"),"{ Enter number }"+colors[9])
+            except:
+                print(colors[2],actions[npc].split("_"),"{ Enter number }"+colors[9])
+        
+        
+        temp = link[npc].split("_")
+        if temp[a-1].startswith("F"):
+            temp3 = temp[a-1].split(",")
+            temp2 = int(temp3[1])
             if temp2 == 0:
                 con = False
+                out = True
+            elif temp2 == 1:
+                HP = MaxHP
+                con = False
+                out = True
             else:
                 print("Function not created")
                 if apple == bannana:
