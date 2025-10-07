@@ -105,6 +105,27 @@ while indecisiveloop == 1:
                 currency = 5
                 Deck = [8,8,9]
                 Hand_limit = 2
+        elif a == "3":
+            print("---------------------------")
+            print("Just cast fireball!")
+            print("Cards: firebolt(4) ,Barrier(2)")
+            print("Stats: HP:7,ATK:0.5,MATK:1.5,DF:1,AP:5,MP:20,$:10,Hand:2")
+            print("---------------------------")
+            a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
+            if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
+                indecisiveloop = 0
+                MaxHP = 7
+                HP = 7
+                ATK = 0.5
+                MATK = 1.5
+                DF = 1
+                AP = 0
+                MAP = 5
+                MP = 0
+                MMP = 20
+                currency = 10
+                Deck = []
+                Hand_limit = 2
 
 
 #Base Player setup
