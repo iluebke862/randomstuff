@@ -1847,17 +1847,25 @@ while gamestate != -1:
 
         try:
             location_standing_on = cordination[this_location_map_locations.index(player_map_location,1)]
+            debug(locations_submaps[location_standing_on])
+
         except:
             location_standing_on = "N/A"
-        
-        if out == True or location_standing_on == "N/A" or locations_submaps[location_standing_on].startswith("F"):
-            Refresh_Map(locations_location[player_index])
-        elif locations_submaps[location_standing_on].startswith("F"):
+        temp_bool = False
+        try:
+            if locations_submaps[location_standing_on].startswith("F"):
+                temp_bool = True
+        except:
+            pass
+        if temp_bool and out == False:
             func_list[int(locations_submaps[location_standing_on].split("_")[1])](locations_submaps[location_standing_on].split("_")[2])
+        elif out == True or location_standing_on == "N/A":
+            Refresh_Map(locations_location[player_index])
+            out = False
         else:
             locations_location[player_index] = "S,"+str(location_standing_on)
+            locations_map_location[player_index] = locations_submaps_spawn[location_standing_on]
             Refresh_Map("S,"+str(location_standing_on))
-        
 
 
         # if location_standing_on != "N/A" or out == True:
