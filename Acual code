@@ -27,7 +27,7 @@ print("what I just said is totaly wrong and this is accualy a deck building game
 
 
 indecisiveloop = 1
-valid = ["1","2"]
+valid = ["1","2","3"]
 if name == "\x1b[34mbug\x1b[39m":
     valid.append("0")
 while indecisiveloop == 1:
@@ -36,8 +36,8 @@ while indecisiveloop == 1:
     if name == "\x1b[34mbug\x1b[39m":
         print(colors[1]+"0 Bugtester"+colors[9])
     print("1 Rouge")
-    print("2 Warrior")
-    print("3 Mage (N/A)")
+    print("2 Warrior (WIP)")
+    print("3 Mage (WIP)")
     print("4 Priest (N/A)")
     print("---------------------------")
     a = input(colors[2]+"Pick your class"+colors[9])
@@ -127,13 +127,12 @@ while indecisiveloop == 1:
                 Deck = [10,10,10,10]
                 Hand_limit = 2
 
-
 #Base Player setup
 shield = 0
 Discard = []
 Effects = []
 Effectsstack = []
-
+Effectslv = []
 
 
 #Data
@@ -146,7 +145,7 @@ cards_def = (0,0,0,0,0,0,0,0,0,2,0)
 cards_type = (0,0,"1_2","1_2",0,0,"0_1_3","1_3",0,0,"1_4")
 cards_ap_cost = (0,0,0,0,0,2,5,0,0,2,0)
 cards_mp_cost = (0,0,0,0,0,0,5,4,0,0,4)
-cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden")
+cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden","Firebolt")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense. Only targets allys\nAP:2\nShield:2\n[Pysical]","Lauch a high speed fire pellet. Inflicts 3 stacks of Lv1 burn\nMP:4\nDamage:3\n[Magical][Fire]\n\n"+status_description["Burn"])
 cards_def_price = (10,10,10,10,2,5,10,5,2,5,3)
 #typings
@@ -163,9 +162,69 @@ enemyMaxHP = []
 enemyHP = []
 enemyHPBar = []
 enemyHPBardesplay = []
-enemyeffects = []
-enemyeffectsstack = []
-enemyeffectslv = []
+asdf1 = []
+asdf2 = []
+asdf3 = []
+asdf4 = []
+asdf5 = []
+asdf6 = []
+asdf7 = []
+asdf8 = []
+asdf9 = []
+asdf10 = []
+asdf11 = []
+asdf12 = []
+asdf13 = []
+asdf14 = []
+asdf15 = []
+asdf16 = []
+asdf17 = []
+asdf18 = []
+asdf19 = []
+asdf20 = []
+enemyeffects = [asdf1,asdf2,asdf3,asdf4,asdf5,asdf6,asdf7,asdf8,asdf9,asdf10,asdf11,asdf12,asdf13,asdf14,asdf15,asdf16,asdf17,asdf18,asdf19,asdf20]
+sasdf1 = []
+sasdf2 = []
+sasdf3 = []
+sasdf4 = []
+sasdf5 = []
+sasdf6 = []
+sasdf7 = []
+sasdf8 = []
+sasdf9 = []
+sasdf10 = []
+sasdf11 = []
+sasdf12 = []
+sasdf13 = []
+sasdf14 = []
+sasdf15 = []
+sasdf16 = []
+sasdf17 = []
+sasdf18 = []
+sasdf19 = []
+sasdf20 = []
+enemyeffectsstack = [sasdf1,sasdf2,sasdf3,sasdf4,sasdf5,sasdf6,sasdf7,sasdf8,sasdf9,sasdf10,sasdf11,sasdf12,sasdf13,sasdf14,sasdf15,sasdf16,sasdf17,sasdf18,sasdf19,sasdf20]
+aasdf1 = []
+aasdf2 = []
+aasdf3 = []
+aasdf4 = []
+aasdf5 = []
+aasdf6 = []
+aasdf7 = []
+aasdf8 = []
+aasdf9 = []
+aasdf10 = []
+aasdf11 = []
+aasdf12 = []
+aasdf13 = []
+aasdf14 = []
+aasdf15 = []
+aasdf16 = []
+aasdf17 = []
+aasdf18 = []
+aasdf19 = []
+aasdf20 = []
+enemyeffectslv = [aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20]
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
@@ -297,6 +356,11 @@ def Refresh_hud():
     global APBar
     global DF
     global shield
+    global asdf1,asdf2,asdf3,asdf4,asdf5,asdf6,asdf7,asdf8,asdf9,asdf10,asdf11,asdf12,asdf13,asdf14,asdf15,asdf16,asdf17,asdf18,asdf19,asdf20,aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20,sasdf1,sasdf2,sasdf3,sasdf4,sasdf5,sasdf6,sasdf7,sasdf8,sasdf9,sasdf10,sasdf11,sasdf12,sasdf13,sasdf14,sasdf15,sasdf16,sasdf17,sasdf18,sasdf19,sasdf20
+    if len(enemy) > 20:
+        print("go add more variables so effects support more then 20")
+        if aadsfasdfasd == akjsdfklaljksdf:
+            pass
     if enemy == "":
         pass
     else:
@@ -368,6 +432,8 @@ def Refresh_hud():
                     Deck.pop(temp)
                     Hand.append(temp2)
             Handdelt = 1
+        debug(Deck) 
+        debug(Hand)
 
         count = 0
         
@@ -488,9 +554,12 @@ def Refresh_hud():
                         Discard.append(Hand[0])
                         Hand.pop(0)
         else:
+            kills = 0
             for i in range(0,len(enemy)):
                 
-                damagey = allenemies_atk[enemy[i]]/DF
+               
+                
+                damagey = allenemies_atk[enemy[i-kills]]/DF
                 damagey -= shield
                 if damagey <0:
                     shield = damagey *-1
@@ -509,8 +578,22 @@ def Refresh_hud():
 
                 if "Burn" in Effects:
                     HP -= Effectslv[Effects.index("Burn")]
-                    print("You also took",Effectslv[Effects.index("Burn")],"damage")
-            
+                    Effectsstack[Effects.index("Burn")] -= 1
+                    print("You also took",Effectslv[Effects.index("Burn")],"burn damage")
+                if "Burn" in enemyeffects[i-kills]:
+                    enemyHP[i-kills] -= enemyeffectslv[i-kills][enemyeffects[i-kills].index("Burn")]
+                    enemyeffectsstack[i-kills][enemyeffects[i-kills].index("Burn")] -= 1
+                    print(enemydesplayname[i-kills],"took",enemyeffectslv[i-kills][enemyeffects[i-kills].index("Burn")],"burn damage")
+                
+                
+                
+                if enemyHP[i-kills] >= 0:
+                    enemy.pop(i-kills)
+                    enemydesplayname.pop(i-kills)
+                    enemyHP.pop(i-kills)
+                    enemyHPBar.pop(i-kills)
+                    enemyHPBardesplay.pop(i-kills)
+                    kills += 1
             #removes effects
             effectsremove = []
             for i in range(0,len(Effects)):
@@ -556,7 +639,7 @@ def Play_card(card,target):
     global cards_mp_cost
     global cards_ap_cost
     global shield
-
+    global asdf1,asdf2,asdf3,asdf4,asdf5,asdf6,asdf7,asdf8,asdf9,asdf10,asdf11,asdf12,asdf13,asdf14,asdf15,asdf16,asdf17,asdf18,asdf19,asdf20,aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20,sasdf1,sasdf2,sasdf3,sasdf4,sasdf5,sasdf6,sasdf7,sasdf8,sasdf9,sasdf10,sasdf11,sasdf12,sasdf13,sasdf14,sasdf15,sasdf16,sasdf17,sasdf18,sasdf19,sasdf20
     #special card effects
     if card == 6:
         if "Conceal" in Effects:
@@ -567,7 +650,17 @@ def Play_card(card,target):
             Effectslv.append(1)
     if card == 10:
         if target > 0:
-            pass
+            if "Burn" in enemyeffects[target-1]:
+                if enemyeffectslv[target-1][enemyeffects[target-1].index("Burn")] > 1:
+                    pass
+                else:
+                    enemyeffectsstack[target-1][enemyeffects[target-1].index("Burn")] += 3
+                    if enemyeffectslv[target-1][enemyeffects[target-1].index("Burn")] < 1:
+                        enemyeffectslv[target-1][enemyeffects[target-1].index("Burn")] = 1
+            else:
+                enemyeffects[target-1].append("Burn")
+                enemyeffectsstack[target-1].append(3)
+                enemyeffectslv[target-1].append(1)
         else:
             if "Burn" in Effects:
                 if Effectslv[Effects.index("Burn")] > 1:
@@ -577,7 +670,7 @@ def Play_card(card,target):
                     if Effectslv[Effects.index("Burn")] < 1:
                         Effectslv[Effects.index("Burn")] = 1
             else:
-                Effectsstack.append("Burn")
+                Effects.append("Burn")
                 Effectsstack.append(3)
                 Effectslv.append(1)
     debug("card:"+str(card))
