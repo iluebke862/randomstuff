@@ -1272,7 +1272,7 @@ def Refresh_Map(map):
                 ts = 2
             else:
                 ts = 1
-            for i in range(0,2):
+            for i in range(0,ts):
                 if biome_mobs[biome_desplay.index(player_zone)] != '':
                     mobs = biome_mobs[biome_desplay.index(player_zone)].split(",")
                     temp = random.randint(0,len(mobs)-1)
