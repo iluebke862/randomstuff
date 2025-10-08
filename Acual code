@@ -229,18 +229,18 @@ enemyeffectslv = [aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9
 
 
 
-allenemies_MaxHP = (5,10)
-allenemies_desplayname = ("sans","zombie")
-allenemies_atk = (4,2)
-allenemies_week = ("1","1_2")
-allenemies_monney = (20,10)
+allenemies_MaxHP = (5,10,4,8,10,20,10)
+allenemies_desplayname = ("sans","zombie","Wolf","Slime","Bandit","Wyvlen","Mounten Bandit")
+allenemies_atk = (4,2,3,1,3,5,4)
+allenemies_week = ("1","1_2","999","999","4","5","4")
+allenemies_monney = (20,10,2,3,5,10,12)
 #map saves
 map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10,1,1,1,1,1,1,1)
 biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610","\u26CB","\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9],"\u26C0")
-biome_mobs=("","0,1","0,1","0,1","","","","","","","")
+biome_mobs=("","2,3","3,4","5,6","","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -493,7 +493,7 @@ def Refresh_hud():
             idiotloop = 0
             while idiotloop == 0:
                 try:
-                    examine = int(input(colors[2]+"Insert # to examine\n"+colors[9]))
+                    examine = int(input(colors[2]+"Insert a # to examine\n"+colors[9]))
                     idiotloop = 1
                 except:
                     print(colors[1]+"Invalid input, valid inputs include",str(valid_awnsers)+colors[9])
