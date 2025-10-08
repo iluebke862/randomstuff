@@ -109,7 +109,7 @@ while indecisiveloop == 1:
             print("---------------------------")
             print("Just cast fireball!")
             print("Cards: firebolt(4) ,Barrier(2)")
-            print("Stats: HP:7,ATK:0.5,MATK:1.5,DF:1,AP:5,MP:20,$:10,Hand:2")
+            print("Stats: HP:7,ATK:0.5,MATK:1.5,DF:1,AP:5,MP:12,$:10,Hand:2")
             print("---------------------------")
             a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
@@ -121,10 +121,10 @@ while indecisiveloop == 1:
                 DF = 1
                 AP = 0
                 MAP = 5
-                MP = 0
+                MP = 12
                 MMP = 20
                 currency = 10
-                Deck = [10,10,10,10]
+                Deck = [10,10,10,10,11,11]
                 Hand_limit = 2
 
 #Base Player setup
@@ -140,21 +140,21 @@ Effectslv = []
 #statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)","Burn":"durring the next turn, the effected takes [burn level], and removes one stack"}
 #moves data
-cards_atk = (1,2,-1,-2,2,4,0,4,2,0,3)
-cards_def = (0,0,0,0,0,0,0,0,0,2,0)
-cards_type = (0,0,"1_2","1_2",0,0,"0_1_3","1_3",0,0,"1_4")
-cards_ap_cost = (0,0,0,0,0,2,5,0,0,2,0)
-cards_mp_cost = (0,0,0,0,0,0,5,4,0,0,4)
-cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden","Firebolt")
-cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense. Only targets allys\nAP:2\nShield:2\n[Pysical]","Lauch a high speed fire pellet. Inflicts 3 stacks of Lv1 burn\nMP:4\nDamage:3\n[Magical][Fire]\n\n"+status_description["Burn"])
-cards_def_price = (10,10,10,10,2,5,10,5,2,5,3)
+cards_atk = (1,2,-1,-2,2,4,0,4,2,0,3,0)
+cards_def = (0,0,0,0,0,0,0,0,0,2,0,2)
+cards_type = (0,0,"1_2","1_2",0,0,"0_1_3","1_3",0,0,"1_4","1_5")
+cards_ap_cost = (0,0,0,0,0,2,5,0,0,2,0,0)
+cards_mp_cost = (0,0,0,0,0,0,5,4,0,0,4,6)
+cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden","Firebolt","Barrier")
+cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense. Only targets allys\nAP:2\nShield:2\n[Pysical]","Lauch a high speed fire pellet. Inflicts 3 stacks of Lv1 burn\nMP:4\nDamage:3\n[Magical][Fire]\n\n"+status_description["Burn"],"Water based protection spell\nMP:6\nDF:2\n[Magical][Water]")
+cards_def_price = (10,10,10,10,2,5,10,5,2,5,3,4)
 #typings
 #0 pysical
 #1 Magic
 #2 Holy
 #3 Dark
 #4 Fire
-#5
+#5 Water
 #enemies data
 enemy = []
 enemydesplayname = []
@@ -580,12 +580,15 @@ def Refresh_hud():
                 
                 
                 
-                if enemyHP[i-kills] >= 0:
+                if enemyHP[i-kills] <= 0:
                     enemy.pop(i-kills)
                     enemydesplayname.pop(i-kills)
                     enemyHP.pop(i-kills)
                     enemyHPBar.pop(i-kills)
                     enemyHPBardesplay.pop(i-kills)
+                    enemyeffectslv.pop(i-kills)
+                    enemyeffectsstack.pop(i-kills)
+                    enemyeffects.pop(i-kills)
                     kills += 1
             #removes effects
             effectsremove = []
@@ -755,6 +758,9 @@ def Play_card(card,target):
             enemyHP.pop(target-1)
             enemyHPBar.pop(target-1)
             enemyHPBardesplay.pop(target-1)
+            enemyeffectslv.pop(target-1)
+            enemyeffectsstack.pop(target-1)
+            enemyeffects.pop(target-1)
     #remove effects
     effectsremove = []
     for i in range(0,len(Effects)):
@@ -1264,12 +1270,6 @@ def Refresh_Map(map):
                     temp = random.randint(0,len(mobs)-1)
                     enemy.append(int(mobs[int(temp)]))
                     gamestate = 1
-            
-
-
-
-
-
 def Generate_Map(map_location):
     global map_saves
     global map_saves_location
