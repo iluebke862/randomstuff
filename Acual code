@@ -235,7 +235,7 @@ map_saves_location = []
 biome_list = (0,1,2,3)
 biome_mob_chance=(10,10,10,10,1,1,1,1,1,1,1)
 biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610","\u26CB","\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9],"\u26C0")
-biome_mobs=("","0_1","0_1","0_1","","","","","","","")
+biome_mobs=("","0,1","0,1","0,1","","","","","","","")
 valid_stuff = ("","0","0","1","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
@@ -258,7 +258,6 @@ def debug(msg):
         print("DEBUG-0")
         print(msg)
         print("DEBUG-1")
-
 def Encoutner_setup():
     global enemyHPBar
     global enemyMaxHP
@@ -325,12 +324,6 @@ def Encoutner_setup():
         while MPBar <= ((MMP-10)/(MPBar*0.1)):
             MPBar += 1
         MPBar -= 1
-    
-
-
-
-
-#Hud
 def Refresh_hud():
     #start of enemy HP bar refresh
     global enemyHPBar
@@ -615,7 +608,6 @@ def Refresh_hud():
         print()
         print("--------------------------------------------")
         input(colors[2]+"press enter to continue\n"+colors[9])
-
 def Play_card(card,target):
     global enemy, enemydesplayname, enemyHPBar, enemyHPBardesplaycounter, enemyHPBardesplay, enemyHPBarrefresh
     global enemyHP
@@ -780,29 +772,7 @@ def Play_card(card,target):
     #put card in discard
     Discard.append(card)
     Hand.remove(card)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def Refresh_Map(map,sub,first):
+def Refresh_Map(map):
     global enemy
     global map_saves
     global map_saves_location
@@ -886,11 +856,9 @@ def Refresh_Map(map,sub,first):
 
     
     #decompiliation
-    if sub == True:
+    if map.startswith("S"):
         temp =map.split(",")
         map_loading = locations_submaps[int(temp[1])]
-        if first == True:
-            return
     else:
         map_loading = map_saves[map_saves_location.index(map)]
     
@@ -1504,8 +1472,12 @@ def Generate_Map(map_location):
 
         #locations
         #finds biome
-        x = random.randint(0,29)
-        y = random.randint(0,29)
+        if name == "\x1b[34mbug\x1b[39m":
+            x = 13
+            y = 13
+        else:
+            x = random.randint(0,29)
+            y = random.randint(0,29)
         spot = maps_list[x][y]
         #checks for valid stuff to put there
         temp = valid_stuff[int(spot)].split(",")
@@ -1622,8 +1594,6 @@ def Exit(nope):
     locations_location[player_location] = temp2
     locations_map_location[player_location] = temp
     out = True
-
-
 def Dialouge(person):
     global out, HP, MaxHP
     person = int(person)
@@ -1678,16 +1648,6 @@ def Dialouge(person):
                     print("how not sintex error")
         else:
             npc = int(temp[a-1])
-
-
-
-
-
-
-
-
-
-
 def Shop(shop_stuff):
     global cards_descrition, cards_names, currency, Deck, out
 
@@ -1851,41 +1811,76 @@ out = False
 
 while gamestate != -1:
     while gamestate == 0:
+        #dubug
         if name == "\x1b[34mbug\x1b[39m":
             print(locations)
             print(locations_location)
             print(locations_map_location)
             print(locations_submaps_spawn)
             print(gamestate)
-            print(locations_submaps_spawn)
-        temp = locations.index("Player")
-        temp2 = locations_map_location[temp]
-        debug(temp2)
+            print(locations_submaps)
+        
+        
+        player_index = locations.index("Player")
+        player_map_location = locations_map_location[player_index]
+        
+        
+        this_location_locations = locations_location.copy()
+        this_location_map_locations = locations_map_location.copy()
+        temp_remove = []
+        cordination = []
+        for i in range(0, len(this_location_locations)):
+            cordination.append(i)
+        for i in range(0,len(this_location_locations)):
+
+            if this_location_locations[i] == locations_location[player_index]:
+                pass
+            else:
+                temp_remove.append(i)
+        temp_remove.reverse()
+        for i in range(0,len(temp_remove)):
+            this_location_map_locations.pop(temp_remove[i])
+            cordination.pop(temp_remove[i])
+        debug(player_map_location)
+        debug(this_location_map_locations)
+
+
         try:
-            temp4 = locations_map_location.index(temp2,1)
+            location_standing_on = cordination[this_location_map_locations.index(player_map_location,1)]
         except:
-            pass
-        if locations_map_location.count(temp2) > 1:
-            if out == True:
-                if locations_location[temp].startswith("S"):
-                    Refresh_Map(locations_location[temp],True,False)
-                else:
-                    Refresh_Map(locations_location[temp],False,False)
-                out = False
-            else:
-                if locations_submaps[temp4].startswith("N/A"):          
-                    pass
-                elif locations_submaps[temp4].startswith("F_"):
-                    func_list[int(locations_submaps[temp4].split("_")[1])](locations_submaps[temp4].split("_")[2])
-                else:
-                    locations_location[locations.index("Player")] = "S,"+str(temp4)
-                    Refresh_Map("S,"+str(temp4),True,True)
-                    locations_map_location[temp] = locations_submaps_spawn[temp4]
+            location_standing_on = "N/A"
+        
+        if out == True or location_standing_on == "N/A" or locations_submaps[location_standing_on].startswith("F"):
+            Refresh_Map(locations_location[player_index])
+        elif locations_submaps[location_standing_on].startswith("F"):
+            func_list[int(locations_submaps[location_standing_on].split("_")[1])](locations_submaps[location_standing_on].split("_")[2])
         else:
-            if locations_location[temp].startswith("S"):
-                Refresh_Map(locations_location[temp],True,False)
-            else:
-                Refresh_Map(locations_location[temp],False,False)
+            locations_location[player_index] = "S,"+str(location_standing_on)
+            Refresh_Map("S,"+str(location_standing_on))
+        
+
+
+        # if location_standing_on != "N/A" or out == True:
+        #     if out == True:
+        #         if locations_location[player_index].startswith("S"):
+        #             Refresh_Map(locations_location[player_index],True,False)
+        #         else:
+        #             Refresh_Map(locations_location[player_index],False,False)
+        #         out = False
+        #     else:
+        #         if locations_submaps[location_standing_on].startswith("N/A"):          
+        #             pass
+        #         elif locations_submaps[location_standing_on].startswith("F_"):
+        #             func_list[int(locations_submaps[location_standing_on].split("_")[1])](locations_submaps[location_standing_on].split("_")[2])
+        #         else:
+        #             locations_location[locations.index("Player")] = "S,"+str(location_standing_on)
+        #             Refresh_Map("S,"+str(location_standing_on),True,True)
+        #             locations_map_location[player_index] = locations_submaps_spawn[location_standing_on]
+        # else:
+        #     if locations_location[player_index].startswith("S"):
+        #         Refresh_Map(locations_location[player_index],True,False)
+        #     else:
+        #         Refresh_Map(locations_location[player_index],False,False)
 
     if gamestate == 1:
         Encoutner_setup()
