@@ -67,16 +67,16 @@ while indecisiveloop == 1:
             print("---------------------------")
             print("Classic rouge")
             print("Cards: Stab(4),Backstab(2),Conceal,Dark Bolt")
-            print("Stats: HP:5,ATK:1.1,MATK:1,DF:0.9,AP:10,MP:7,$:10,Hand:3")
+            print("Stats: HP:7,ATK:1.3,MATK:1,DF:1,AP:10,MP:7,$:10,Hand:3")
             print("---------------------------")
             a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
             if a == "Yes" or a == "yes" or a == "y" or a == "Confirm" or a == "confirm":
                 indecisiveloop = 0
-                MaxHP = 5
-                HP = 5
-                ATK = 1.1
+                MaxHP = 7
+                HP = 7
+                ATK = 1.3
                 MATK = 1
-                DF = 0.9
+                DF = 1
                 AP = 0
                 MAP = 10
                 MP = 0
@@ -225,10 +225,15 @@ aasdf18 = []
 aasdf19 = []
 aasdf20 = []
 enemyeffectslv = [aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20]
+
+
+
+
 allenemies_MaxHP = (5,10)
 allenemies_desplayname = ("sans","zombie")
 allenemies_atk = (4,2)
 allenemies_week = ("1","1_2")
+allenemies_monney = (20,10)
 #map saves
 map_saves = []
 map_saves_location = []
@@ -350,6 +355,7 @@ def Refresh_hud():
     global DF
     global shield
     global asdf1,asdf2,asdf3,asdf4,asdf5,asdf6,asdf7,asdf8,asdf9,asdf10,asdf11,asdf12,asdf13,asdf14,asdf15,asdf16,asdf17,asdf18,asdf19,asdf20,aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20,sasdf1,sasdf2,sasdf3,sasdf4,sasdf5,sasdf6,sasdf7,sasdf8,sasdf9,sasdf10,sasdf11,sasdf12,sasdf13,sasdf14,sasdf15,sasdf16,sasdf17,sasdf18,sasdf19,sasdf20
+    global currency
     if len(enemy) > 20:
         print("go add more variables so effects support more then 20")
         OSError.exit()
@@ -580,6 +586,7 @@ def Refresh_hud():
                 
                 
                 if enemyHP[i-kills] <= 0:
+                    currency += allenemies_monney[enemy[i-kills]]
                     enemy.pop(i-kills)
                     enemydesplayname.pop(i-kills)
                     enemyHP.pop(i-kills)
@@ -634,6 +641,7 @@ def Play_card(card,target):
     global cards_ap_cost
     global shield
     global asdf1,asdf2,asdf3,asdf4,asdf5,asdf6,asdf7,asdf8,asdf9,asdf10,asdf11,asdf12,asdf13,asdf14,asdf15,asdf16,asdf17,asdf18,asdf19,asdf20,aasdf1,aasdf2,aasdf3,aasdf4,aasdf5,aasdf6,aasdf7,aasdf8,aasdf9,aasdf10,aasdf11,aasdf12,aasdf13,aasdf14,aasdf15,aasdf16,aasdf17,aasdf18,aasdf19,aasdf20,sasdf1,sasdf2,sasdf3,sasdf4,sasdf5,sasdf6,sasdf7,sasdf8,sasdf9,sasdf10,sasdf11,sasdf12,sasdf13,sasdf14,sasdf15,sasdf16,sasdf17,sasdf18,sasdf19,sasdf20
+    global currency
     #special card effects
     if card == 6:
         if "Conceal" in Effects:
@@ -751,7 +759,7 @@ def Play_card(card,target):
     debug("check to see if the guy is dead")
     if target > 0:
         if enemyHP[target-1] <= 0:
-
+            currency += allenemies_monney[enemy[target-1]]
             enemy.pop(target-1)
             enemydesplayname.pop(target-1)
             enemyHP.pop(target-1)
@@ -760,6 +768,7 @@ def Play_card(card,target):
             enemyeffectslv.pop(target-1)
             enemyeffectsstack.pop(target-1)
             enemyeffects.pop(target-1)
+
     #remove effects
     effectsremove = []
     for i in range(0,len(Effects)):
@@ -1515,6 +1524,7 @@ def Generate_Map(map_location):
             rare_cards = [0]
             epic_cards = [0]
             legendary_cards = [0]
+
             locations.append("Shop")
             locations_location.append("S,"+str(len(locations)-4))
             locations_map_location.append("5,18")
@@ -1522,15 +1532,15 @@ def Generate_Map(map_location):
             atemp = random.randint(2,5)
             for i in range(0,atemp):
                 if random.randint(1,100) == 100:
-                    temp = legendary_cards[random.randint(0,len(legendary_cards-1))]
+                    temp = legendary_cards[random.randint(0,len(legendary_cards)-1)]
                 elif random.randint(1,50) == 80:
-                    temp = epic_cards[random.randint(0,len(epic_cards-1))]
+                    temp = epic_cards[random.randint(0,len(epic_cards)-1)]
                 elif random.randint(1,25) == 25:
-                    temp = rare_cards[random.randint(0,len(rare_cards-1))]
+                    temp = rare_cards[random.randint(0,len(rare_cards)-1)]
                 elif random.randint(1,10) == 10:
-                    temp = uncommon_cards[random.randint(0,len(uncommon_cards-1))]
+                    temp = uncommon_cards[random.randint(0,len(uncommon_cards)-1)]
                 else:
-                    temp = common_cards[random.randint(0,len(common_cards-1))]
+                    temp = common_cards[random.randint(0,len(common_cards)-1)]
                 tempp = random.randint(0,40)
                 if tempp <20:
                     tempp = 1-(tempp/100)
