@@ -302,7 +302,7 @@ def Encoutner_setup():
         if enemyMaxHP[i] <= 10:
             enemyHPBar.append(10)
         else:
-            enemyHPBar[i] = 10
+            enemyHPBar.append(10)
             while enemyHPBar[i] <= ((enemyMaxHP[i]-10)/(enemyHPBar[i]*0.1)):
                 enemyHPBar[i] += 1
             enemyHPBar[i] -= 1
