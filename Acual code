@@ -86,6 +86,7 @@ while indecisiveloop == 1:
                 currency = 10
                 Deck = [4,4,4,4,5,5,6,7]
                 Hand_limit = 3
+                inventory = []
         elif a == "2":
             print("---------------------------")
             print("Just a traveling swordsmen")
@@ -107,6 +108,7 @@ while indecisiveloop == 1:
                 currency = 5
                 Deck = [8,8,9,13]
                 Hand_limit = 2
+                inventory = []
         elif a == "3":
             print("---------------------------")
             print("Just cast fireball!")
@@ -128,6 +130,7 @@ while indecisiveloop == 1:
                 currency = 10
                 Deck = [10,10,10,10,11,11]
                 Hand_limit = 2
+                ineventory = []
 
 #Base Player setup
 shield = 0
@@ -965,9 +968,9 @@ def Refresh_Map(map):
             print(i,end="")
         print()
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    valid_awnsers = ["W","A","S","D","w","a","s","d"]
+    valid_awnsers = ["W","A","S","D","w","a","s","d","Inventory","inventory"]
     idiotloop = 0
-    print(colors[2]+"Enter WASD to move"+colors[9])
+    print(colors[2]+"Enter WASD to move, or Inventory to check"+colors[9])
     while idiotloop == 0:
         try:
             examine = input()
@@ -985,6 +988,8 @@ def Refresh_Map(map):
     
     #actions
     walls = [4]
+    if examine == "Inventory" or examine == "inventory":
+        Inventory("Check")
     if examine == "W" or examine =="w":
 
         listlocation = locations.index("Player")
@@ -1811,30 +1816,93 @@ def Shop(shop_stuff):
                     input(colors[2]+"Press enter to continue"+colors[9])
 def Inventory(action,item=0):
     global inventory
-    if action = "Check":
-        while exit = false:
-            page = (int(str(item/10).split(".")[0])+1)
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            for i in range(9,0,-1):
-                if len(inventory) >= (page*10-i):
-                    if item == (page*10-i-1):
-                        print(colors[3]+"\u2662",str(inv_item_name[inventory[page*10-i-1]])+colors[9])
-                    else:
-                        print("\u2662",inv_item_name[inventory[page*10-i-1]])
-            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print(colors[2]+"Press enter to select, or enter w or s to reselect"+colors[9])
+    if action == "Check":
+        exit = False
+        idiotloop = True
+        while idiotloop == True:
+            print(colors[2]+"Enter 1 for equipment/stats, 2 for deck, or 3 for items"+colors[9])
             a = input()
-            if a == "w" or a == "W"
-                if item == 0
-                    pass
-                else:
-                    item -= 1
-            if a == "s" or a == "S":
-                if (item+1)>(len(inventory)-1):
-                    pass
-                else:
-                    item += 1
-            if a == ""
+            if a == "1" or a == "2" or a == "3":
+                idiotloop = False
+            else:
+                print("Invalid input")
+        if a == "1":
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            print("Armor:")
+            print("Weapn:")
+            print("HP:",str(HP)+"/"+str(MaxHP))
+            print("DF:",DF)
+            print("AP:",MAP)
+            print("MP:",MMP)
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            input(colors[2]+"Press enter to continue"+colors[9]) 
+        if a == "2":
+            if len(Deck) == 0:
+                print("you have none u dingus")
+            else:
+                while exit == False:
+                    page = (int(str(item/10).split(".")[0])+1)
+                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    for i in range(9,-1,-1):
+                        if len(Deck) >= (page*10-i):
+                            if item == (page*10-i-1):
+                                print(colors[3]+"\u2662",str(cards_names[Deck[page*10-i-1]])+colors[9])
+                            else:
+                                print("\u2662",cards_names[Deck[page*10-i-1]])
+                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    print(colors[2]+"Press enter to select, or enter w or s to reselect, or exit to exit"+colors[9])
+                    a = input()
+                    if a == "w" or a == "W":
+                        if item == 0:
+                            pass
+                        else:
+                            item -= 1
+                    if a == "s" or a == "S":
+                        if (item+1)>(len(Deck)-1):
+                            pass
+                        else:
+                            item += 1
+                    if a == "":
+                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                        print(cards_description[Deck[item]])
+                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                        input(colors[2]+"Press enter to continue"+colors[9]) 
+                    if a == "exit" or a == "Exit":
+                        exit = True
+        if a == "3":
+            if len(inventory) == 0:
+                print("you have none u dingus")
+            else:
+                while exit == False:
+                    page = (int(str(item/10).split(".")[0])+1)
+                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    for i in range(9,-1,-1):
+                        if len(inventory) >= (page*10-i):
+                            if item == (page*10-i-1):
+                                print(colors[3]+"\u2662",str(inv_item_name[inventory[page*10-i-1]])+colors[9])
+                            else:
+                                print("\u2662",inv_item_name[inventory[page*10-i-1]])
+                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    print(colors[2]+"Press enter to select, or enter w or s to reselect, or exit to exit"+colors[9])
+                    a = input()
+                    if a == "w" or a == "W":
+                        if item == 0:
+                            pass
+                        else:
+                            item -= 1
+                    if a == "s" or a == "S":
+                        if (item+1)>(len(inventory)-1):
+                            pass
+                        else:
+                            item += 1
+                    if a == "":
+                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                        print(inv_item_description[inventory[item]])
+                        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                        input(colors[2]+"Press enter to continue"+colors[9]) 
+                    if a == "exit" or a == "Exit":
+                        exit = True
+
                 
                 
 
