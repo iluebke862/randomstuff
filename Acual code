@@ -1800,15 +1800,17 @@ def Shop(shop_stuff):
                 hover += 1
         if a == "":
             if (hover + 1) == len(shop_items):
-                tempstring = "F"
+                tempstring = ""
                 for i in range(0,len(shop_items)-1):
-                    debug(i)
                     if shop_items_type[i] == "card":
                         tempadd = "0"
-                        debug("y")
+                        
                     else:
                         OSError.exit()
-                    tempstring = tempstring+"_"+str(shop_items[i])+"_"+str(shop_prices[i])+"_"+tempadd
+                    if i == 0:
+                        tempstring = str(shop_items[i])+"_"+str(shop_prices[i])+"_"+tempadd
+                    else:
+                        tempstring = tempstring+"_"+str(shop_items[i])+"_"+str(shop_prices[i])+"_"+tempadd
                 locations_submaps_spawn[int(shop_stuff)] = tempstring
                 exit = True
                 out = True
