@@ -157,6 +157,11 @@ cards_mp_cost = (0,0,0,0,0,0,5,4,0,0,4,6,2,5)
 cards_names = ("ATK 1","ATK 2","HEAL 1","HEAL 2","Stab","Backstab","Conceal","Dark Bolt","Strike","Harden","Firebolt","Firewall","Flaming Blade","Mend")
 cards_description = ("Deals 1 damage","deals 2 damage","deals -1 damage","deals -2 damage","Basic atack\nDamage:2\n[Pysical]","How creative\nAP:2\nDamage:4\n[Pysical]","Grants one stack of conceal. Allways targets self\nAP:5\nMP:5\n[Pysical][Magical][Dark]\n\n"+status_description["Conceal"],"Magic bolt of darkness\nMP:4\nDamage:4\n[Magical][Dark]","Basic attack\nDamage:2\[Pysical]","Basic defense. Only targets allys\nAP:2\nShield:2\n[Pysical]","Lauch a high speed fire pellet. Inflicts 3 stacks of Lv1 burn\nMP:4\nDamage:3\n[Magical][Fire]\n\n"+status_description["Burn"],"Inflicts burn on any attackers\nMP:6\nDF:2\n[Magical][Fire]","Imbue your weapon with fire before striking\nAP:4\nMP:2\nDamage:6\n[Pysical][Magical][Fire]","Basic Healing\nMP:5\nHeal:2\n[Magical][Holy]")
 cards_def_price = (10,10,10,10,2,5,10,5,2,5,3,4,5,2)
+common_cards = [4,5,7,8,9,12]
+uncommon_cards = [6,10,11]
+rare_cards = [0]
+epic_cards = [0]
+legendary_cards = [0]
 #typings
 #0 pysical
 #1 Magic
@@ -1299,6 +1304,7 @@ def Generate_Map(map_location):
     global biome_list
     global valid_stuff
     global locations_submaps
+    global common_cards, uncommon_cards, rare_cards, epic_cards, legendary_cards
 
     map1  = []
     map2  = []
@@ -1532,11 +1538,7 @@ def Generate_Map(map_location):
             locations_submaps.append("F_0_0")
             
             
-            common_cards = [4,5,7,8,9,12]
-            uncommon_cards = [6,10,11]
-            rare_cards = [0]
-            epic_cards = [0]
-            legendary_cards = [0]
+            
 
             locations.append("Shop")
             locations_location.append("S,"+str(len(locations)-4))
@@ -1753,7 +1755,9 @@ def Shop(shop_stuff):
                         asci_item = 2
                     else:
                         asci_item = 3
-
+        debug(shop_items)
+        debug(shop_prices)
+        debug(shop_items_type)
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print("|"+faces[face][0]+"|"+asci_items[asci_item][0]+"|")
         print("|"+faces[face][1]+"|"+asci_items[asci_item][1]+"|")
@@ -1796,6 +1800,16 @@ def Shop(shop_stuff):
                 hover += 1
         if a == "":
             if (hover + 1) == len(shop_items):
+                tempstring = "F"
+                for i in range(0,len(shop_items)-1):
+                    debug(i)
+                    if shop_items_type[i] == "card":
+                        tempadd = "0"
+                        debug("y")
+                    else:
+                        OSError.exit()
+                    tempstring = tempstring+"_"+str(shop_items[i])+"_"+str(shop_prices[i])+"_"+tempadd
+                locations_submaps_spawn[int(shop_stuff)] = tempstring
                 exit = True
                 out = True
             else:
@@ -1806,11 +1820,28 @@ def Shop(shop_stuff):
                     if shop_items_type[hover] == "card":
                         Deck.append(shop_items[hover])
                     
-                    shop_items.pop(hover)
-                    shop_items_type.pop(hover)
-                    shop_prices.pop(hover)
-                    pruchased = True
 
+                    pruchased = True
+                    if random.randint(1,100) == 100:
+                        temp = legendary_cards[random.randint(0,len(legendary_cards)-1)]
+                    elif random.randint(1,50) == 80:
+                        temp = epic_cards[random.randint(0,len(epic_cards)-1)]
+                    elif random.randint(1,25) == 25:
+                        temp = rare_cards[random.randint(0,len(rare_cards)-1)]
+                    elif random.randint(1,10) == 10:
+                        temp = uncommon_cards[random.randint(0,len(uncommon_cards)-1)]
+                    else:
+                        temp = common_cards[random.randint(0,len(common_cards)-1)]
+                    tempp = random.randint(0,40)
+                    if tempp <20:
+                        tempp = 1-(tempp/100)
+                    elif tempp >20:
+                        tempp = 1+(tempp/100)
+                    else:
+                        tempp = 1
+                    shop_items[hover] = temp
+                    shop_prices[hover] = int(tempp)
+                    shop_items_type[hover] = "card"
                 else:
                     print(colors[1]+"Not enough currency"+colors[9])
                     input(colors[2]+"Press enter to continue"+colors[9])
