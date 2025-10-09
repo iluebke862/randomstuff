@@ -46,6 +46,7 @@ while indecisiveloop == 1:
             print("---------------------------")
             print(colors[1]+"for bugtesting, invalidates speedruns if that ever becomes a thing")
             print("Cards: ATK 1,ATK 2,HEAL 1,HEAL 2")
+            print("Inventory: testitem1, testitem2, testitem3")
             print("Stats: HP:100,ATK:1,MATK:1,DF:1,AP:100,MP:100,$:1000,Hand:2"+colors[9])
             print("---------------------------")
             a = input(colors[2]+"Confirm? (type in yes)"+colors[9]).strip()
@@ -63,6 +64,7 @@ while indecisiveloop == 1:
                 currency = 1000
                 Deck = [0,0,1,1,2,2,3,3]
                 Hand_limit = 8
+                inventory = [0,1,2]
         elif a == "1":
             print("---------------------------")
             print("Classic rouge")
@@ -137,6 +139,10 @@ Effectslv = []
 
 #Data
 
+#items
+inv_item_name = ("Testitem1","Testitem2","Testitem3")
+inv_item_description = ("for testing","for testing","for testing")
+inv_item_function = ("",)
 #statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)","Burn":"durring the next turn, the effected takes [burn level], and removes one stack"}
 #moves data
@@ -515,7 +521,9 @@ def Refresh_hud():
                         pass
             print("---------------------------------------------")
             if examine == 2:
-                print("Your opponent")
+                print("Your opponent(s)")
+                for i in range(0,len(enemy)):
+                    print("[",enemydesplayname[i],"]",enemyeffects[i],enemyeffectslv[i],enemyeffectsstack[i])
                 #might later add stuff here for closer examination if they have a certain item
             if examine > 2 and examine < 9:
                 print("currently empty space, I might add ACCSI art here later")
@@ -1801,9 +1809,33 @@ def Shop(shop_stuff):
                 else:
                     print(colors[1]+"Not enough currency"+colors[9])
                     input(colors[2]+"Press enter to continue"+colors[9])
-
+def Inventory(action,item=0):
+    global inventory
+    if action = "Check":
+        while exit = false:
+            page = (int(str(item/10).split(".")[0])+1)
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            for i in range(9,0,-1):
+                if len(inventory) >= (page*10-i):
+                    if item == (page*10-i-1):
+                        print(colors[3]+"\u2662",str(inv_item_name[inventory[page*10-i-1]])+colors[9])
+                    else:
+                        print("\u2662",inv_item_name[inventory[page*10-i-1]])
+            print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+            print(colors[2]+"Press enter to select, or enter w or s to reselect"+colors[9])
+            a = input()
+            if a == "w" or a == "W"
+                if item == 0
+                    pass
+                else:
+                    item -= 1
+            if a == "s" or a == "S":
+                if (item+1)>(len(inventory)-1):
+                    pass
+                else:
+                    item += 1
+            if a == ""
                 
-
                 
 
     
