@@ -1856,7 +1856,7 @@ def Shop(shop_stuff):
                     print(colors[1]+"Not enough currency"+colors[9])
                     input(colors[2]+"Press enter to continue"+colors[9])
 def Inventory(action,item=0):
-    global inventory, ATK, MATK, DF,Equip1,Equip2
+    global inventory, ATK, MATK, DF,Equip1,Equip2,HP
     if action == "Check":
         exit = False
         idiotloop = True
@@ -1952,6 +1952,7 @@ def Inventory(action,item=0):
                                 using = inv_item_function[inventory[item]].split("[C]")[1]
                             else:
                                 using = inv_item_function[inventory[item]]
+                                consume = False
                             debug(using)
                             if using.startswith("W"):
                                 using = using.split("W-")[1]
@@ -2016,7 +2017,43 @@ def Inventory(action,item=0):
                                 temp = Equip2
                                 Equip2 = inventory[item]
                                 inventory[item] = temp
+                            
+                            if using.startswith("A"):
+                                using = using.split("A-")[1]
+                                if using.find("^") == -1:
+                                    pot = using
+                                else:
+                                    pot = using.split("^")[0]
+                                    using = using.split("^")[1]
+                                
+                                new_weapon_pot = pot
+                                new_weapon_using = using
+                                using = inv_item_function[Equip1]
+                                using = using.split("A-")[1]
+                                if using.find("^") == -1:
+                                    pot = using
+                                else:
+                                    pot = using.split("^")[0]
+                                    using = using.split("^")[1]
+                                
+                                old_weapon_pot = pot
+                                using = new_weapon_using
 
+                                DF -= float(old_weapon_pot)
+                                DF += float(new_weapon_pot)
+
+                                debug(old_weapon_pot)
+                                debug(new_weapon_pot)
+                                temp = Equip1
+                                Equip1 = inventory[item]
+                                inventory[item] = temp
+                            if using.startswith("H"):
+                                HP += float(using.split("-")[1])
+                                if HP > MaxHP:
+                                    HP = MaxHP
+                                if consume == True:
+                                    inventory.pop(item)
+                                
 
                     if a == "exit" or a == "Exit":
                         exit = True
