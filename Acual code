@@ -64,7 +64,7 @@ while indecisiveloop == 1:
                 currency = 1000
                 Deck = [0,0,1,1,2,2,3,3]
                 Hand_limit = 8
-                inventory = [0,1,2]
+                inventory = [0,1,2,3,4]
         elif a == "1":
             print("---------------------------")
             print("Classic rouge")
@@ -138,14 +138,22 @@ Discard = []
 Effects = []
 Effectsstack = []
 Effectslv = []
+Equip1 = 0
+Equip2 = 1
 
 
 #Data
 
 #items
-inv_item_name = ("Testitem1","Testitem2","Testitem3")
-inv_item_description = ("for testing","for testing","for testing")
-inv_item_function = ("",)
+inv_item_name = ("Basic clothes","Basic Weapon","Potion","Leather armor","Copper Sword")
+inv_item_description = ("Provies no defense","just enough to be usable","Basic Healing\nHeal:4","Crude but functional\n[+0.1 DF]","Not great, but it can do\n[+0.1ATK]")
+inv_item_function = ("A-0","W-0-0/1","[C]H-4","A-0.1","W-0.1-0")
+#Format for functions, if consume start with [C], then put in the primary function, A for armor, W for weapons,
+#^ for multifunction items
+#For armor/Weapons:
+#(A/W)-potency-typing/typing... no / at end
+#For Healing
+#H-potency
 #statuses
 status_description = {"Conceal": "(Conceal: When you play a pysical attack card, you deal 1.5x, and it removes a stack. When you end your turn, take no damage and remove a stack)","Burn":"durring the next turn, the effected takes [burn level], and removes one stack"}
 #moves data
@@ -1848,7 +1856,7 @@ def Shop(shop_stuff):
                     print(colors[1]+"Not enough currency"+colors[9])
                     input(colors[2]+"Press enter to continue"+colors[9])
 def Inventory(action,item=0):
-    global inventory
+    global inventory, ATK, MATK, DF,Equip1,Equip2
     if action == "Check":
         exit = False
         idiotloop = True
@@ -1861,12 +1869,15 @@ def Inventory(action,item=0):
                 print("Invalid input")
         if a == "1":
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-            print("Armor:")
-            print("Weapn:")
+            print("Armor:",inv_item_name[Equip1])
+            print("Weapn:",inv_item_name[Equip2])
             print("HP:",str(HP)+"/"+str(MaxHP))
+            print("ATK:",ATK)
+            print("MAK",MATK)
             print("DF:",DF)
             print("AP:",MAP)
             print("MP:",MMP)
+            print("$:",currency)
             print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
             input(colors[2]+"Press enter to continue"+colors[9]) 
         if a == "2":
@@ -1905,6 +1916,7 @@ def Inventory(action,item=0):
         if a == "3":
             if len(inventory) == 0:
                 print("you have none u dingus")
+                input(colors[2]+"Press enter to continue"+colors[9]) 
             else:
                 while exit == False:
                     page = (int(str(item/10).split(".")[0])+1)
@@ -1932,7 +1944,80 @@ def Inventory(action,item=0):
                         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
                         print(inv_item_description[inventory[item]])
                         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-                        input(colors[2]+"Press enter to continue"+colors[9]) 
+                        b = input(colors[2]+"Press enter to continue, or 1 to use/equip"+colors[9])
+                        if b == "1":
+                            debug(b)
+                            if inv_item_function[inventory[item]].startswith("[C]"):
+                                consume = True
+                                using = inv_item_function[inventory[item]].split("[C]")[1]
+                            else:
+                                using = inv_item_function[inventory[item]]
+                            debug(using)
+                            if using.startswith("W"):
+                                using = using.split("W-")[1]
+                                pot = using.split("-")[0]
+                                using = using.split(pot+"-")[1]
+                                aterbu = []
+                                count = 0
+                                while using.find("/") == 1:
+                                    aterbu.append(using.split("/")[0])
+                                    usingtemp = using.split(aterbu[count]+"/")
+                                    usingtemp.pop(0)
+                                    using = usingtemp[0]
+                                    for i in range(0,len(usingtemp)-1):
+                                        using = using+usingtemp[i+1]
+                                if using.find("^") == -1:
+                                    aterbu.append(using)
+                                else:
+                                    aterbu.append(using.split("^"))
+                                    using = using.split(aterbu[len(aterbu)-1]+"^")[1]
+                                
+                                new_weapon_aterbu = aterbu
+                                new_weapon_pot = pot
+                                new_weapon_using = using
+                                using = inv_item_function[Equip2]
+
+
+ 
+                                using = using.split("W-")[1]
+                                pot = using.split("-")[0]
+                                using = using.split(pot+"-")[1]
+                                aterbu = []
+                                count = 0
+                                while using.find("/") == 1:
+                                    aterbu.append(using.split("/")[0])
+                                    usingtemp = using.split(aterbu[count]+"/")
+                                    usingtemp.pop(0)
+                                    using = usingtemp[0]
+                                    for i in range(0,len(usingtemp)-1):
+                                        using = using+usingtemp[i+1]
+                                if using.find("^") == -1:
+                                    aterbu.append(using)
+                                else:
+                                    aterbu.append(using.split("^"))
+                                    using = using.split(aterbu[len(aterbu)-1]+"^")[1]
+                                
+                                old_weapon_pot = pot
+                                old_weapon_aterbu = aterbu
+                                using = new_weapon_using
+
+                                if "0" in old_weapon_aterbu:
+                                    ATK -= float(old_weapon_pot)
+                                if "1" in old_weapon_aterbu:
+                                    MATK -= float(old_weapon_pot)
+                                if "0" in new_weapon_aterbu:
+                                    ATK += float(new_weapon_pot)
+                                if "1" in new_weapon_aterbu:
+                                    MATK += float(new_weapon_pot)
+                                debug(old_weapon_aterbu)
+                                debug(old_weapon_pot)
+                                debug(new_weapon_aterbu)
+                                debug(new_weapon_pot)
+                                temp = Equip2
+                                Equip2 = inventory[item]
+                                inventory[item] = temp
+
+
                     if a == "exit" or a == "Exit":
                         exit = True
 
