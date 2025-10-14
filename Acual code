@@ -1,4 +1,5 @@
 import random
+import time
 
 
 #colors
@@ -285,6 +286,7 @@ def debug(msg):
         print("DEBUG-0")
         print(msg)
         print("DEBUG-1")
+        time.sleep(0.01)
 def Encoutner_setup():
     global enemyHPBar
     global enemyMaxHP
@@ -1591,19 +1593,102 @@ def Generate_Map(map_location):
             if d == 0:
                 #snake gen
                 cordx = 15
-                cordy = 29
+                cordy = 28
                 stop = False
-                while stop == False
+                tunnelsx = []
+                tunnelsy = []
+                tunnels = []
+                forkx = []
+                forky = []
+                exits = []
+                exitsx = []
+                exitsy = []
+                while stop == False:
+                    
+                    randoloop = False
+                    last = 4
+                    exits.append("15_29")
+                    while randoloop == False:
+                        di = random.randint(1,4)
+                        if di == 1 and cordx != 0 and last != 3:
+                            #find new location, check if not exit then check spots around it to see if they are exits and if any is true deny it
+                            templist = [str(cordx-2)+"_"+str(cordy),str(cordx-1)+"_"+str(cordy-1),str(cordx-1)+"_"+str(cordy+1)]
+                            if templist[0] in exits or templist[1] in exits or templist[2] in exits:
+                                last = 1
+                            else:
+                                cordx -= 1
+                                randoloop = True
+                                last = 1
+                        elif di == 2 and cordy != 29 and last != 4:
+                            templist = [str(cordx)+"_"+str(cordy+2),str(cordx-1)+"_"+str(cordy+1),str(cordx+1)+"_"+str(cordy+1)]
+                            if templist[0] in exits or templist[1] in exits or templist[2] in exits:
+                                last = 2
+                            else:
+                                cordy += 1
+                                randoloop = True
+                                last = 2
+                        elif di == 3 and cordx != 29 and last != 1:
+                            templist = [str(cordx+2)+"_"+str(cordy),str(cordx+1)+"_"+str(cordy+1),str(cordx+1)+"_"+str(cordy-1)]
+                            if templist[0] in exits or templist[1] in exits or templist[2] in exits:
+                                last = 3
+                            else:
+                                cordx += 1
+                                randoloop = True
+                                last = 3
+                        elif di == 4 and cordy != 0 and last != 2:
+                            templist = [str(cordx-1)+"_"+str(cordy-1),str(cordx+1)+"_"+str(cordy-1),str(cordx)+"_"+str(cordy-2)]
+                            if templist[0] in exits or templist[1] in exits or templist[2] in exits:
+                                last = 4
+                            else:
+                                cordy-= 1
+                                randoloop = True
+                                last = 4
+                                debug("y")
+                        debug(cordx)
+                        debug(cordy)
+                        debug(di)
+                        debug(templist)
+                        debug(exits)
+                        debug(last)
+                    exits.remove("15_29")
+                    if cordx == 0 or cordx == 29 or cordy == 0 or cordy == 29:
+                        if cordy == 29 and cordx == 29 or cordy == 29 and cordx == 0 or cordy == 0 and cordx == 29 or cordy == 0 and cordx == 0:
+                            pass
+                        else:
+                            exitsx.append(cordx)
+                            exitsy.append(cordy)
+                            exits.append(str(cordx)+"_"+str(cordy))
+                            if len(forkx) > 0:
+                                cordx = forkx[0]
+                                cordy = forky[0]
+                                forkx.pop(0)
+                                forky.pop(0)
+                            else:
+                                stop = True
+                    elif str(cordx)+"_"+str(cordy) in tunnels:
+                        if len(forkx) > 0:
+                            cordx = forkx[0]
+                            cordy = forky[0]
+                            forkx.pop(0)
+                            forky.pop(0)
+                        elif len(exits) == 0:
+                            o = random.randint(0,len(tunnelsx)-1)
+                            cordx = tunnelsx[o]
+                            cordy = tunnelsy[o]
+                        else:
+                            stop = True
+                    else:  
+                        tunnelsx.append(cordx)
+                        tunnelsy.append(cordy)
+                        tunnels.append(str(cordx)+"_"+str(cordy))
+                        if 10 == random.randint(1,10):
+                            forkx.append(cordx)
+                            forky.append(cordy)
+                    debug(tunnelsx)
+                    debug(tunnelsy)
+                    debug(exits)
+                #forming the map
                 
-                di = random.randint(1,4)
-                if di == 1:
-                    cordx -=1
-                elif di == 2:
-                    cordy += 1
-                elif di == 3:
-                    cordx += 1
-                else:
-                    cordy -= 1
                 
                 
 
@@ -2089,7 +2174,7 @@ func_list = [Exit,Shop,Dialouge]
 
 
 
-
+Generate_Map("S_C")
 Generate_Map("0,0")
 out = False
 
