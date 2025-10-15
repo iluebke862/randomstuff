@@ -1675,6 +1675,7 @@ def Generate_Map(map_location):
                             forkx.append(cordx)
                             forky.append(cordy)
                 #forming the map
+                #make shure this is pushing
                 for i in range(0,30):
                     #30 rows
                     for a in range(0,30):
