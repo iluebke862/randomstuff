@@ -261,10 +261,10 @@ allenemies_monney = (20,10,2,3,5,10,12)
 map_saves = []
 map_saves_location = []
 biome_list = (0,1,2,3)
-biome_mob_chance=(10,10,10,10,1,1,1,1,1,1,1)
-biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610","\u26CB","\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9],"\u26C0")
-biome_mobs=("","2,3","3,4","5,6","","","","","","","")
-valid_stuff = ("","0","0","1","","","","","","")
+biome_mob_chance=(10,10,10,10,1,1,1,1,1,1,1,10,10)
+biome_desplay=(colors[4]+"\u26C6"+colors[9],colors[2]+"\u2667"+colors[9],colors[3]+"\u2637"+colors[9],"\u26F0","\u2610","\u26CB","\u26EA","\u26EB",colors[3]+"\u2630"+colors[9],colors[2]+"\u26EC"+colors[9],"\u26C0",colors[5]+"\u26C6"+colors[9],"\u2637")
+biome_mobs=("","2,3","3,4","5,6","","","","","","","","0","0")
+valid_stuff = ("","0","0","1","","","","","","","","")
 locations = ["Player"]
 locations_location = ["0,0"]
 locations_map_location = ["14,14"]
@@ -1576,11 +1576,7 @@ def Generate_Map(map_location):
             elif structure == 1:
                 structure = "Cave"
                 Generate_Map("S_C")
-                locations.append(structure)
-                locations_location.append(map_location)
-                locations_map_location.append(str(x)+","+str(y))
-                locations_submaps_spawn.append("15,28")
- 
+                
 
     else:
 
@@ -1592,11 +1588,11 @@ def Generate_Map(map_location):
             exit_side = "v"
             if d == 0:
                 #snake gen
-                cordx = 15
+                cordx = 16
                 cordy = 28
                 stop = False
-                tunnelsx = []
-                tunnelsy = []
+                tunnelsx = [16]
+                tunnelsy = [28]
                 tunnels = []
                 forkx = []
                 forky = []
@@ -1607,7 +1603,7 @@ def Generate_Map(map_location):
                     
                     randoloop = False
                     last = 4
-                    exits.append("15_29")
+                    exits.append("16_29")
                     while randoloop == False:
                         di = random.randint(1,4)
                         if di == 1 and cordx != 0 and last != 3:
@@ -1643,14 +1639,8 @@ def Generate_Map(map_location):
                                 cordy-= 1
                                 randoloop = True
                                 last = 4
-                                debug("y")
-                        debug(cordx)
-                        debug(cordy)
-                        debug(di)
-                        debug(templist)
-                        debug(exits)
-                        debug(last)
-                    exits.remove("15_29")
+
+                    exits.remove("16_29")
                     if cordx == 0 or cordx == 29 or cordy == 0 or cordy == 29:
                         if cordy == 29 and cordx == 29 or cordy == 29 and cordx == 0 or cordy == 0 and cordx == 29 or cordy == 0 and cordx == 0:
                             pass
@@ -1684,13 +1674,38 @@ def Generate_Map(map_location):
                         if 10 == random.randint(1,10):
                             forkx.append(cordx)
                             forky.append(cordy)
-                    debug(tunnelsx)
-                    debug(tunnelsy)
-                    debug(exits)
                 #forming the map
-                
-                
-                
+                for i in range(0,30):
+                    #30 rows
+                    for a in range(0,30):
+                        #30 collums
+                        if str(a)+"_"+str(i) in tunnels: #checks in xy cords are a tunnel and not a wall
+                            maps_list[i].append(12)
+                            #maps_list is a list of 30 lists
+                        else:
+                            maps_list[i].append(4)
+                        debug(maps_list)
+                debug(maps_list)
+                addstring = ""
+                for i in range(0,30):
+                    
+                    for d in range(0,30):
+                        addstring = addstring + str(maps_list[i][d]) + "_"
+                    addstring = addstring + "/"
+                debug(addstring)
+                locations_submaps.append(addstring)
+                locations.append(structure)
+                locations_location.append(map_location)
+                locations_map_location.append(str(x)+","+str(y))
+                locations_submaps_spawn.append("16,28")
+                locations.append("Exit")
+                locations_location.append("S,"+str(len(locations)-2))
+                locations_map_location.append("16,29")
+                locations_submaps_spawn.append("N/A")
+                locations_submaps.append("F_0_0")
+            if d == 1:
+                #tresure room gen
+                pass    
 
             
 def Manual_map_editor():
@@ -2174,7 +2189,6 @@ func_list = [Exit,Shop,Dialouge]
 
 
 
-Generate_Map("S_C")
 Generate_Map("0,0")
 out = False
 
