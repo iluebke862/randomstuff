@@ -1576,7 +1576,15 @@ def Generate_Map(map_location):
             elif structure == 1:
                 structure = "Cave"
                 Generate_Map("S_C")
-                
+                locations.append("Cave")
+                locations_location.append(map_location)
+                locations_map_location.append(str(x)+","+str(y))
+                locations_submaps_spawn.append("16,28")
+                locations.append("Exit")
+                locations_location.append("S,"+str(len(locations)-2))
+                locations_map_location.append("16,29")
+                locations_submaps_spawn.append("N/A")
+                locations_submaps.append("F_0_0")
 
     else:
 
@@ -1695,15 +1703,7 @@ def Generate_Map(map_location):
                     addstring = addstring + "/"
                 debug(addstring)
                 locations_submaps.append(addstring)
-                locations.append(structure)
-                locations_location.append(map_location)
-                locations_map_location.append(str(x)+","+str(y))
-                locations_submaps_spawn.append("16,28")
-                locations.append("Exit")
-                locations_location.append("S,"+str(len(locations)-2))
-                locations_map_location.append("16,29")
-                locations_submaps_spawn.append("N/A")
-                locations_submaps.append("F_0_0")
+                
             if d == 1:
                 #tresure room gen
                 pass    
